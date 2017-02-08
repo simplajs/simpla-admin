@@ -1,0 +1,33 @@
+{
+  "name": "simpla-admin",
+  "version": "0.0.0",
+  "authors": [
+    "Simpla"
+  ],
+  "description": "Beautiful, lightweight admin interface for Simpla",
+  "keywords": [
+    "web-component",
+    "polymer",
+    "simpla-admin"
+  ],
+  "main": "simpla-admin.html",
+  "license": "MIT",
+  "homepage": "https://github.com/SimplaElements/simpla-admin/",
+  "ignore": [
+    "*",
+    "!*.html",
+    "!LICENSE"
+  ],
+  "dependencies": {
+    "webcomponentsjs": "^0.7.14",
+    "polymer": "^1.6.0",
+    "simpla-notify": "^0.1.0",
+    "simpla-login": "^0.1.1",
+    "simple-dropdown": "simple-dropdown-menu#^0.1.4",
+    "simpla-styles": "^0.5.3"
+  },
+  "devDependencies": {
+    "web-component-tester": "^4.0.0",
+    "simpla": "simplaio/simpla#v2.0.0-preview"
+  }
+}

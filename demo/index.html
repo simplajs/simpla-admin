@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>simpla-admin Demo</title>
+
+    <!-- Import Web Components polyfill -->
+    <!-- <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script> -->
+
+    <!-- Use shadow DOM if available -->
+    <script>
+      window.Polymer = { dom: 'shadow' };
+    </script>
+
+    <!-- Setup Simpla -->
+    <script src="../simpla/simpla.js"></script>
+    <script>
+      Simpla.init('S1OAwHrr');
+    </script>
+
+    <!-- Import component -->
+    <link rel="import" href="../simpla-admin.html" async>
+
+  </head>
+  <body unresolved>
+    <!-- simpla-admin self-attaches -->
+  </body>
+</html>

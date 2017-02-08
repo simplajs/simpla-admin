@@ -1,0 +1,19 @@
+sudo: true
+dist: trusty
+language: node_js
+node_js:
+- '6'
+before_script:
+- npm install bower
+- bower install
+script: wct --plugin sauce
+cache:
+  directories:
+  - node_modules
+addons:
+  firefox: latest
+  apt:
+    sources:
+    - google-chrome
+    packages:
+    - google-chrome-stable

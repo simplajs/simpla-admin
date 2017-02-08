@@ -1,0 +1,193 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="simpla-admin">
+  <template>
+    <style>
+      /* Make sure we're always out of the flow */
+      :host {
+        position: absolute;
+      }
+
+      /* Patch hidden in IE */
+      :host([hidden]),
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+
+    <!-- Deps imported lazily on editable/authed -->
+    <simpla-admin-controls
+      editable="[[_editable]]"
+      authenticated="[[_authenticated]]"
+      on-login="login"
+      hidden$="[[_loginOpen]]">
+    </simpla-admin-controls>
+
+    <simpla-login
+      id="login"
+      active="{{_loginOpen}}">
+    </simpla-login>
+
+    <simpla-notify></simpla-notify>
+
+  </template>
+
+  <script>
+    // Behaviors
+    import loginPrompt from './behaviors/loginPrompt';
+    import unsavedChanges from './behaviors/unsavedChanges';
+    import quickToggle from './behaviors/quickToggle';
+
+    // Utils
+    import SelfAttach from './utils/selfAttach';
+    import HashTracking from './utils/hashTracking';
+
+    const LAZYLOAD_DEPENDENCIES = [
+      '../simpla-login/simpla-login.html',
+      '../simpla-notify/simpla-notify.html',
+      'simpla-admin-controls.html'
+    ];
+
+    class SimplaAdmin {
+      beforeRegister() {
+        this.is = 'simpla-admin';
+
+        this.properties = {
+
+          /**
+           * Hide admin when inactive
+           * @type {Boolean}
+           */
+          hidden: {
+            type: Boolean,
+            reflectToAttribute: true
+          },
+
+          /**
+           * Simpla editable state
+           * @type {Boolean}
+           */
+          _editable: Boolean,
+
+          /**
+           * Simpla authenticated state
+           * @type {[type]}
+           */
+          _authenticated: Boolean,
+
+          /**
+           * Whether lazyload deps have been imported
+           * @type {Boolean}
+           */
+          _dependenciesImported: Boolean,
+
+          /**
+           * Whether login modal is currently open
+           * @type {Boolean}
+           */
+          _loginOpen: Boolean,
+
+          /**
+           * Store of Simpla observers
+           * @type {Array}
+           */
+          _simplaObservers: {
+            type: Array,
+            value: []
+          }
+
+        };
+
+        this.observers = [
+          '_toggleHidden(_editable, _authenticated)'
+        ];
+      }
+
+      get behaviors() {
+        return [ loginPrompt, quickToggle, unsavedChanges ];
+      }
+
+      /**
+       * Init simpla-admin
+       * Called by Polymer on attach
+       * @return {undefined}
+       */
+      attached() {
+        this._importDependencies();
+        this._syncEditableAndAuthenticated();
+      }
+
+      /**
+       * Clean up observers on detach
+       * @return {undefined}
+       */
+      detached() {
+        this._simplaObservers.forEach(observer => observer.unobserve());
+        this._simplaObservers = [];
+        HashTracking.untrack();
+        SelfAttach.unobserve();
+      }
+
+      /**
+       * Utility method to open simpla-login
+       * @return {undefined}
+       */
+      login() {
+        this.$['login'].open();
+      }
+
+      /**
+       * Observes Simpla state to hide admin when inactive
+       * @param  {Boolean} editable      Current value of the editable prop
+       * @param  {Boolean} authenticated Current value of the authenticated prop
+       * @return {undefined}
+       */
+      _toggleHidden(editable, authenticated) {
+        this.hidden = !editable && !authenticated;
+      }
+
+      /**
+       * Keeps editable and authenticated properties in sync with Simpla state
+       * @return {undefined}
+       */
+      _syncEditableAndAuthenticated() {
+        let { editable, authenticated } = Simpla.getState(),
+            updateEditable = (editable) => this._editable = editable,
+            updateAuthenticated = (authenticated) => this._authenticated = authenticated;
+
+        // Set initial values
+        updateEditable(editable);
+        updateAuthenticated(authenticated);
+
+        // Observe future changes
+        this._simplaObservers.push(Simpla.observeState('editable', updateEditable));
+        this._simplaObservers.push(Simpla.observeState('authenticated', updateAuthenticated));
+      }
+
+      /**
+       * Lazily import deps on attach
+       * @return {undefined}
+       */
+      _importDependencies() {
+        if (this._dependenciesImported) {
+          return;
+        }
+
+        LAZYLOAD_DEPENDENCIES.forEach(dependency => {
+          let link = document.createElement('link');
+
+          link.rel = 'import';
+          link.href = this.resolveUrl(dependency);
+          document.head.appendChild(link);
+        });
+
+        this._dependenciesImported = true;
+      }
+    };
+    Polymer(SimplaAdmin);
+
+    // Global actions
+    SelfAttach.observe();
+    HashTracking.track();
+  </script>
+</dom-module>
