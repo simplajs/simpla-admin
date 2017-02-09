@@ -49,17 +49,11 @@
       }
 
       .button::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        transition: background 100ms ease;
+        @apply(--simpla-button-highlight);
       }
 
       .button:active::before {
-        background: var(--simpla-light-white);
+        @apply(--simpla-button-highlight-active);
       }
 
       .menu {
