@@ -134,6 +134,8 @@
 
   </template>
   <script>
+    import v1SaveCompat from './behaviors/v1SaveCompat';
+
     const PRIMARY_ACTIONS = {
             editableAuthed: {
               label: 'save',
@@ -179,11 +181,15 @@
            */
           authenticated: Boolean
 
-        }
+        };
+      }
+
+      get behaviors() {
+        return [ v1SaveCompat ];
       }
 
       /**
-       * Utility function to tell parent to login
+       * Tell simpla-admin to login
        * @return {undefined}
        */
       login() {
@@ -191,7 +197,7 @@
       }
 
       /**
-       * Utility function to log user out and leave edit mode
+       * Log the user out and leave edit mode
        * @return {[type]} [description]
        */
       logout() {
@@ -201,27 +207,45 @@
 
       /**
        * Save content with Simpla
+       * NOTE: Using v1SaveCompat behavior instead
+       * until v1 elements moved to v2 SDK
        * @return {undefined}
        */
-      save() {
-        let success = () => {
-              this.busy = false;
-              this.fire('simpla-notification', {
-                text: NOTIFICATIONS.saved
-              });
-            },
-            failed = () => {
-              this.busy = false;
-              this.fire('simpla-notification', {
-                text: NOTIFICATIONS.saveFailed
-              });
-            };
+      // save() {
+      //   let success = () => {
+      //         this.busy = false;
+      //         this.fire('simpla-notification', {
+      //           text: NOTIFICATIONS.saved
+      //         });
+      //       },
+      //       failed = () => {
+      //         this.busy = false;
+      //         this.fire('simpla-notification', {
+      //           text: NOTIFICATIONS.saveFailed
+      //         });
+      //       };
 
-        this.busy = true;
+      //   this.busy = true;
 
-        Simpla.save()
-          .then(success)
-          .catch(failed)
+      //   Simpla.save()
+      //     .then(success)
+      //     .catch(failed)
+      // }
+
+      /**
+       * Set Simpla editable true
+       * @return {undefined}
+       */
+      enterEditMode() {
+        Simpla.editable(true);
+      }
+
+      /**
+       * Set Simpla editable false
+       * @return {[type]} [description]
+       */
+      exitEditMode() {
+        Simpla.editable(false);
       }
 
       /**
@@ -242,22 +266,6 @@
         }
 
         return action;
-      }
-
-      /**
-       * Utility function to set Simpla editable true
-       * @return {undefined}
-       */
-      enterEditMode() {
-        Simpla.editable(true);
-      }
-
-      /**
-       * Utility function to set Simpla editable false
-       * @return {[type]} [description]
-       */
-      exitEditMode() {
-        Simpla.editable(false);
       }
 
       /**
