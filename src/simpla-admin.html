@@ -48,11 +48,30 @@
       'simpla-admin-controls.html'
     ];
 
+    // Globals
+    window.SimplaAdmin = window.SimplaAdmin || {};
+    SelfAttach.observe();
+
+    if (window.SimplaAdmin.hashTracking !== false) {
+      HashTracking.track();
+    }
+
+    // Component
     class SimplaAdmin {
       beforeRegister() {
         this.is = 'simpla-admin';
 
         this.properties = {
+
+          /**
+           * Whether to bind editable to #edit
+           * @type {Boolean}
+           */
+          hashTracking: {
+            type: Boolean,
+            observer: '_updateHashTracking',
+            value: true
+          },
 
           /**
            * Hide admin when inactive
@@ -112,8 +131,16 @@
       }
 
       /**
+       * Attach singleton to window on created
+       * @return {[type]} [description]
+       */
+      ready() {
+        Object.assign(this, window.SimplaAdmin);
+        window.SimplaAdmin = this;
+      }
+
+      /**
        * Init simpla-admin
-       * Called by Polymer on attach
        * @return {undefined}
        */
       attached() {
@@ -148,6 +175,19 @@
        */
       _toggleHidden(editable, authenticated) {
         this.hidden = !editable && !authenticated;
+      }
+
+      /**
+       * Update hashtracker when hashTracking prop changes
+       * @param  {Boolean} hashTracking Whether to bind editable to #edit
+       * @return {undefined}
+       */
+      _updateHashTracking(hashTracking) {
+        if (hashTracking) {
+          HashTracking.track();
+        } else {
+          HashTracking.untrack();
+        }
       }
 
       /**
@@ -189,9 +229,5 @@
       }
     };
     Polymer(SimplaAdmin);
-
-    // Global actions
-    SelfAttach.observe();
-    HashTracking.track();
   </script>
 </dom-module>
