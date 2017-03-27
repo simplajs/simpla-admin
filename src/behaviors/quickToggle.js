@@ -13,8 +13,14 @@ function bindEditableToHotkeys(e) {
 }
 
 export default {
+  properties: {
+
+    quickToggle: Boolean
+
+  },
+
   observers: [
-    '_toggleHotkeyListener(_authenticated)'
+    '_toggleHotkeyListener(_authenticated, quickToggle)'
   ],
 
   /**
@@ -22,8 +28,8 @@ export default {
    * @param  {Boolean} authenticated Current value of authenticated prop
    * @return {undefined}
    */
-  _toggleHotkeyListener(authenticated) {
-    if (authenticated) {
+  _toggleHotkeyListener(authenticated, quickToggle) {
+    if (authenticated && quickToggle) {
       document.addEventListener('keydown', bindEditableToHotkeys)
     } else {
       document.removeEventListener('keydown', bindEditableToHotkeys);
