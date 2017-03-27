@@ -173,19 +173,9 @@
        * @return {undefined}
        */
       _importDependencies() {
-        if (this._dependenciesImported) {
-          return;
-        }
-
         LAZYLOAD_DEPENDENCIES.forEach(dependency => {
-          let link = document.createElement('link');
-
-          link.rel = 'import';
-          link.href = this.resolveUrl(dependency);
-          document.head.appendChild(link);
+          this.importHref(dependency, null, null, true);
         });
-
-        this._dependenciesImported = true;
       }
     };
     Polymer(SimplaAdmin);
