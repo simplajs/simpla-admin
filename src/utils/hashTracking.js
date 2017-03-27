@@ -23,6 +23,6 @@ export default {
 
   untrack() {
     window.removeEventListener('hashchange', hashToEditable);
-    this._simplaObserver.unobserve();
+    this._simplaObserver.unobserve && this._simplaObserver.unobserve();
   }
 }

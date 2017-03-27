@@ -14,26 +14,27 @@ export default {
    */
   _promptLoginOnEditable(loginPrompt) {
     let { _simplaObservers: observers } = this,
-        simplaLogin = this.$['login'],
         promptLogin = (editable) => {
-          if (editable && !this._authenticated) {
-            simplaLogin.prompt().then(loggedIn => {
-              Simpla.editable(loggedIn)
-            });
-          }
-        },
-        initialPrompt = () => {
-          let shouldPrompt = Simpla.getState('editable') && loginPrompt;
+          let simplaLogin = this.$['login'],
+              checkPrompt = new Promise(function check(resolve) {
+                if (typeof simplaLogin.prompt === 'function') {
+                  resolve();
+                } else {
+                  setTimeout(check.bind(null, resolve), 10);
+                }
+              });
 
-          if (typeof simplaLogin.prompt === 'function') {
-            promptLogin(shouldPrompt);
-          } else {
-            setTimeout(initialPrompt, 10);
-          }
+          checkPrompt.then(() => {
+            if (editable && !this._authenticated) {
+              simplaLogin.prompt().then(loggedIn => {
+                Simpla.editable(loggedIn)
+              });
+            }
+          });
         };
 
     if (loginPrompt) {
-      initialPrompt();
+      promptLogin(Simpla.getState('editable'));
       observers.login = Simpla.observeState('editable', promptLogin);
     } else {
       observers.login && observers.login.unobserve();
