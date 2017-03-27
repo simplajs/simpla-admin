@@ -135,23 +135,19 @@
   </template>
   <script>
     const PRIMARY_ACTIONS = {
-            editableAuthed: {
-              label: 'save',
-              method: 'save'
-            },
-            editableNotAuthed: {
-              label: 'login',
-              method: 'login'
-            },
-            authedNotEditable: {
-              label: 'edit this page',
-              method: 'enterEditMode'
-            }
-          },
-          NOTIFICATIONS = {
-            saved: 'changes saved',
-            saveFailed: 'something went wrong, try again?'
-          };
+      editableAuthed: {
+        label: 'save',
+        method: 'save'
+      },
+      editableNotAuthed: {
+        label: 'login',
+        method: 'login'
+      },
+      authedNotEditable: {
+        label: 'edit this page',
+        method: 'enterEditMode'
+      }
+    };
 
     class SimplaAdminControls {
       beforeRegsiter() {
@@ -183,6 +179,14 @@
       }
 
       /**
+       * Tell simpla-admin to save
+       * @return {undefined}
+       */
+      save() {
+        this.fire('save');
+      }
+
+      /**
        * Tell simpla-admin to login
        * @return {undefined}
        */
@@ -197,31 +201,6 @@
       logout() {
         Simpla.logout();
         Simpla.editable(false);
-      }
-
-      /**
-       * Save content with Simpla
-       * @return {undefined}
-       */
-      save() {
-        let success = () => {
-              this.busy = false;
-              this.fire('simpla-notification', {
-                text: NOTIFICATIONS.saved
-              });
-            },
-            failed = () => {
-              this.busy = false;
-              this.fire('simpla-notification', {
-                text: NOTIFICATIONS.saveFailed
-              });
-            };
-
-        this.busy = true;
-
-        Simpla.save()
-          .then(success)
-          .catch(failed)
       }
 
       /**

@@ -20,6 +20,7 @@
       editable="[[_editable]]"
       authenticated="[[_authenticated]]"
       on-login="login"
+      on-save="save"
       hidden$="[[_loginOpen]]">
     </simpla-admin-controls>
 
@@ -36,7 +37,7 @@
     // Behaviors
     import loginPrompt from './behaviors/loginPrompt';
     import unsavedChanges from './behaviors/unsavedChanges';
-    import quickToggle from './behaviors/quickToggle';
+    import hotkeys from './behaviors/hotkeys';
 
     // Utils
     import SelfAttach from './utils/selfAttach';
@@ -47,10 +48,14 @@
             '../simpla-notify/simpla-notify.html',
             'simpla-admin-controls.html'
           ],
+          NOTIFICATIONS = {
+            saved: 'changes saved',
+            saveFailed: 'something went wrong, try again?'
+          },
           DEFAULT_CONFIG = {
             hashTracking: true,
             loginPrompt: true,
-            quickToggle: true
+            hotkeys: true
           };
 
     // Globals
@@ -129,7 +134,7 @@
       get behaviors() {
         return [
           loginPrompt,
-          quickToggle,
+          hotkeys,
           unsavedChanges
         ];
       }
@@ -172,6 +177,31 @@
        */
       login() {
         this.$['login'].open();
+      }
+
+      /**
+       * Save content with Simpla
+       * @return {undefined}
+       */
+      save() {
+        let success = () => {
+              this.busy = false;
+              this.fire('simpla-notification', {
+                text: NOTIFICATIONS.saved
+              });
+            },
+            failed = () => {
+              this.busy = false;
+              this.fire('simpla-notification', {
+                text: NOTIFICATIONS.saveFailed
+              });
+            };
+
+        this.busy = true;
+
+        Simpla.save()
+          .then(success)
+          .catch(failed)
       }
 
       /**
