@@ -54,10 +54,10 @@
           };
 
     // Globals
-    window.SimplaAdmin = window.SimplaAdmin || {};
+    window.SimplaAdmin = Object.assign({}, DEFAULT_CONFIG, window.SimplaAdmin);
     SelfAttach.observe();
 
-    if (window.SimplaAdmin.hashTracking !== false) {
+    if (window.SimplaAdmin.hashTracking) {
       HashTracking.track();
     }
 
@@ -139,10 +139,7 @@
        * @return {[type]} [description]
        */
       ready() {
-        // Bug with Babel object assign polyfill setting transitive values
-        let config = Object.assign({}, DEFAULT_CONFIG, window.SimplaAdmin);
-
-        Object.assign(this, config);
+        Object.assign(this, window.SimplaAdmin);
         window.SimplaAdmin = this;
       }
 
