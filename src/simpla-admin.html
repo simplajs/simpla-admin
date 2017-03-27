@@ -20,6 +20,7 @@
       editable="[[_editable]]"
       authenticated="[[_authenticated]]"
       on-login="login"
+      on-save="save"
       hidden$="[[_loginOpen]]">
     </simpla-admin-controls>
 
@@ -36,23 +37,50 @@
     // Behaviors
     import loginPrompt from './behaviors/loginPrompt';
     import unsavedChanges from './behaviors/unsavedChanges';
-    import quickToggle from './behaviors/quickToggle';
+    import hotkeys from './behaviors/hotkeys';
 
     // Utils
     import SelfAttach from './utils/selfAttach';
     import HashTracking from './utils/hashTracking';
 
     const LAZYLOAD_DEPENDENCIES = [
-      '../simpla-login/simpla-login.html',
-      '../simpla-notify/simpla-notify.html',
-      'simpla-admin-controls.html'
-    ];
+            '../simpla-login/simpla-login.html',
+            '../simpla-notify/simpla-notify.html',
+            'simpla-admin-controls.html'
+          ],
+          NOTIFICATIONS = {
+            saved: 'changes saved',
+            saveFailed: 'something went wrong, try again?'
+          },
+          DEFAULT_CONFIG = {
+            hashTracking: true,
+            loginPrompt: true,
+            hotkeys: true
+          };
 
+    // Globals
+    window.SimplaAdmin = Object.assign({}, DEFAULT_CONFIG, window.SimplaAdmin);
+    SelfAttach.observe();
+
+    if (window.SimplaAdmin.hashTracking) {
+      HashTracking.track();
+    }
+
+    // Component
     class SimplaAdmin {
       beforeRegister() {
         this.is = 'simpla-admin';
 
         this.properties = {
+
+          /**
+           * Whether to bind editable to #edit
+           * @type {Boolean}
+           */
+          hashTracking: {
+            type: Boolean,
+            observer: '_updateHashTracking'
+          },
 
           /**
            * Hide admin when inactive
@@ -89,11 +117,11 @@
 
           /**
            * Store of Simpla observers
-           * @type {Array}
+           * @type {Object}
            */
           _simplaObservers: {
-            type: Array,
-            value: []
+            type: Object,
+            value: {}
           }
 
         };
@@ -106,14 +134,22 @@
       get behaviors() {
         return [
           loginPrompt,
-          quickToggle,
+          hotkeys,
           unsavedChanges
         ];
       }
 
       /**
+       * Attach singleton to window on created
+       * @return {[type]} [description]
+       */
+      ready() {
+        Object.assign(this, window.SimplaAdmin);
+        window.SimplaAdmin = this;
+      }
+
+      /**
        * Init simpla-admin
-       * Called by Polymer on attach
        * @return {undefined}
        */
       attached() {
@@ -126,8 +162,11 @@
        * @return {undefined}
        */
       detached() {
-        this._simplaObservers.forEach(observer => observer.unobserve());
-        this._simplaObservers = [];
+        Object.keys(this._simplaObservers).forEach(observer => {
+          this._simplaObservers[observer].unobserve()
+        });
+        this._simplaObservers = {};
+
         HashTracking.untrack();
         SelfAttach.unobserve();
       }
@@ -141,6 +180,31 @@
       }
 
       /**
+       * Save content with Simpla
+       * @return {undefined}
+       */
+      save() {
+        let success = () => {
+              this.busy = false;
+              this.fire('simpla-notification', {
+                text: NOTIFICATIONS.saved
+              });
+            },
+            failed = () => {
+              this.busy = false;
+              this.fire('simpla-notification', {
+                text: NOTIFICATIONS.saveFailed
+              });
+            };
+
+        this.busy = true;
+
+        Simpla.save()
+          .then(success)
+          .catch(failed)
+      }
+
+      /**
        * Observes Simpla state to hide admin when inactive
        * @param  {Boolean} editable      Current value of the editable prop
        * @param  {Boolean} authenticated Current value of the authenticated prop
@@ -148,6 +212,19 @@
        */
       _toggleHidden(editable, authenticated) {
         this.hidden = !editable && !authenticated;
+      }
+
+      /**
+       * Update hashtracker when hashTracking prop changes
+       * @param  {Boolean} hashTracking Whether to bind editable to #edit
+       * @return {undefined}
+       */
+      _updateHashTracking(hashTracking) {
+        if (hashTracking) {
+          HashTracking.track();
+        } else {
+          HashTracking.untrack();
+        }
       }
 
       /**
@@ -164,8 +241,8 @@
         updateAuthenticated(authenticated);
 
         // Observe future changes
-        this._simplaObservers.push(Simpla.observeState('editable', updateEditable));
-        this._simplaObservers.push(Simpla.observeState('authenticated', updateAuthenticated));
+        this._simplaObservers.editable = Simpla.observeState('editable', updateEditable);
+        this._simplaObservers.authenticated = Simpla.observeState('authenticated', updateAuthenticated);
       }
 
       /**
@@ -179,9 +256,5 @@
       }
     };
     Polymer(SimplaAdmin);
-
-    // Global actions
-    SelfAttach.observe();
-    HashTracking.track();
   </script>
 </dom-module>

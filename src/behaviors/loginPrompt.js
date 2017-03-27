@@ -1,35 +1,44 @@
 export default {
-  /**
-   * Init login prompt observer
-   * Called by Polymer on attach
-   * @return {undefined}
-   */
-  attached() {
-    this._promptLoginOnEditable();
+  properties: {
+
+    loginPrompt: {
+      type: Boolean,
+      observer: '_toggleLoginPromptObserver'
+    }
+
   },
 
   /**
    * Observer to prompt for login if editable && !authed
+   * @param {Boolean} loginPrompt Whether to prompt for login on editable
    * @return {undefined}
    */
-  _promptLoginOnEditable() {
-    let simplaLogin = this.$['login'],
+  _toggleLoginPromptObserver(loginPrompt) {
+    let { _simplaObservers: observers } = this,
         promptLogin = (editable) => {
-          if (editable && !this._authenticated) {
-            simplaLogin.prompt()
-              .then(loggedIn => Simpla.editable(loggedIn));
-          }
-        },
-        initialPrompt = () => {
-          if (typeof simplaLogin.prompt === 'function') {
-            promptLogin(Simpla.getState('editable'));
-          } else {
-            setTimeout(initialPrompt, 10);
-          }
-        },
-        observer = Simpla.observeState('editable', promptLogin);
+          let simplaLogin = this.$['login'],
+              checkPrompt = new Promise(function check(resolve) {
+                if (typeof simplaLogin.prompt === 'function') {
+                  resolve();
+                } else {
+                  setTimeout(check.bind(null, resolve), 10);
+                }
+              });
 
-    initialPrompt();
-    this._simplaObservers.push(observer);
+          checkPrompt.then(() => {
+            if (editable && !this._authenticated) {
+              simplaLogin.prompt().then(loggedIn => {
+                Simpla.editable(loggedIn)
+              });
+            }
+          });
+        };
+
+    if (loginPrompt) {
+      promptLogin(Simpla.getState('editable'));
+      observers.login = Simpla.observeState('editable', promptLogin);
+    } else {
+      observers.login && observers.login.unobserve();
+    }
   }
 }
