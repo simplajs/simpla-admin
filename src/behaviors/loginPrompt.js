@@ -3,16 +3,17 @@ export default {
 
     loginPrompt: {
       type: Boolean,
-      observer: '_promptLoginOnEditable'
+      observer: '_toggleLoginPromptObserver'
     }
 
   },
 
   /**
    * Observer to prompt for login if editable && !authed
+   * @param {Boolean} loginPrompt Whether to prompt for login on editable
    * @return {undefined}
    */
-  _promptLoginOnEditable(loginPrompt) {
+  _toggleLoginPromptObserver(loginPrompt) {
     let { _simplaObservers: observers } = this,
         promptLogin = (editable) => {
           let simplaLogin = this.$['login'],
