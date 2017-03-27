@@ -43,10 +43,14 @@
     import HashTracking from './utils/hashTracking';
 
     const LAZYLOAD_DEPENDENCIES = [
-      '../simpla-login/simpla-login.html',
-      '../simpla-notify/simpla-notify.html',
-      'simpla-admin-controls.html'
-    ];
+            '../simpla-login/simpla-login.html',
+            '../simpla-notify/simpla-notify.html',
+            'simpla-admin-controls.html'
+          ],
+          DEFAULT_CONFIG = {
+            hashTracking: true,
+            loginPrompt: true
+          };
 
     // Globals
     window.SimplaAdmin = window.SimplaAdmin || {};
@@ -69,8 +73,7 @@
            */
           hashTracking: {
             type: Boolean,
-            observer: '_updateHashTracking',
-            value: true
+            observer: '_updateHashTracking'
           },
 
           /**
@@ -108,11 +111,11 @@
 
           /**
            * Store of Simpla observers
-           * @type {Array}
+           * @type {Object}
            */
           _simplaObservers: {
-            type: Array,
-            value: []
+            type: Object,
+            value: {}
           }
 
         };
@@ -135,7 +138,10 @@
        * @return {[type]} [description]
        */
       ready() {
-        Object.assign(this, window.SimplaAdmin);
+        // Bug with Babel object assign polyfill setting transitive values
+        let config = Object.assign({}, DEFAULT_CONFIG, window.SimplaAdmin);
+
+        Object.assign(this, config);
         window.SimplaAdmin = this;
       }
 
@@ -153,8 +159,11 @@
        * @return {undefined}
        */
       detached() {
-        this._simplaObservers.forEach(observer => observer.unobserve());
-        this._simplaObservers = [];
+        Object.keys(this._simplaObservers).forEach(observer => {
+          this._simplaObservers[observer].unobserve()
+        });
+        this._simplaObservers = {};
+
         HashTracking.untrack();
         SelfAttach.unobserve();
       }
@@ -204,8 +213,8 @@
         updateAuthenticated(authenticated);
 
         // Observe future changes
-        this._simplaObservers.push(Simpla.observeState('editable', updateEditable));
-        this._simplaObservers.push(Simpla.observeState('authenticated', updateAuthenticated));
+        this._simplaObservers.editable = Simpla.observeState('editable', updateEditable);
+        this._simplaObservers.authenticated = Simpla.observeState('authenticated', updateAuthenticated);
       }
 
       /**
