@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>simpla-admin Demo</title>
 
-    <!-- Web Components polyfill -->
+    <!-- Setup demo page -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/0.7.24/webcomponents-lite.min.js"></script>
-
-    <!-- Use shadow DOM if available -->
     <script>
       window.Polymer = { dom: 'shadow' };
     </script>
@@ -16,7 +14,7 @@
     <!-- Setup Simpla -->
     <script src="../simpla/simpla.js"></script>
     <script>
-      Simpla.init('S1OAwHrr');
+      Simpla.init('dummy');
     </script>
 
     <!-- Import component -->
@@ -24,6 +22,11 @@
 
   </head>
   <body>
-    <!-- simpla-admin self-attaches -->
+
+    <!-- simpla-admin self-attaches on editable -->
+
+    <script>
+      window.location.hash = '#edit';
+    </script>
   </body>
 </html>
