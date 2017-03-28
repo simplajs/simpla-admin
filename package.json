@@ -9,8 +9,12 @@
   "author": "Simpla",
   "license": "MIT",
   "keywords": [
-    "web components",
-    "simpla-admin"
+    "simpla-element",
+    "web-component",
+    "simpla",
+    "admin",
+    "content management",
+    "cms"
   ],
   "repository": {
     "type": "git",

@@ -6,13 +6,19 @@
   ],
   "description": "Beautiful, lightweight admin interface for Simpla",
   "keywords": [
+    "simpla-element",
     "web-component",
-    "polymer",
-    "simpla-admin"
+    "simpla",
+    "admin",
+    "content management",
+    "cms"
   ],
   "main": "simpla-admin.html",
   "license": "MIT",
-  "homepage": "https://github.com/SimplaElements/simpla-admin/",
+  "homepage": "http://webcomponents.org/element/SimplaElements/simpla-img",
+  "demos": {
+    "Demo": "demo/index.html"
+  },
   "ignore": [
     "*",
     "!*.html",
