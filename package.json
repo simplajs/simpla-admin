@@ -1,6 +1,6 @@
 {
   "name": "simpla-admin",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Beautiful, lightweight admin interface for Simpla",
   "main": "simpla-admin.html",
   "scripts": {
