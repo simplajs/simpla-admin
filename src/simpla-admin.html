@@ -251,7 +251,7 @@
        */
       _importDependencies() {
         LAZYLOAD_DEPENDENCIES.forEach(dependency => {
-          this.importHref(dependency, null, null, true);
+          this.importHref(this.resolveUrl(dependency));
         });
       }
     };
