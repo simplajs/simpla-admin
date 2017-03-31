@@ -19,6 +19,7 @@
     <simpla-admin-controls
       editable="[[_editable]]"
       authenticated="[[_authenticated]]"
+      busy="{{busy}}"
       on-login="login"
       on-save="save"
       hidden$="[[_loginOpen]]">
@@ -90,6 +91,8 @@
             type: Boolean,
             reflectToAttribute: true
           },
+
+          busy: Boolean,
 
           /**
            * Simpla editable state
