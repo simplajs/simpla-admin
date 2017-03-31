@@ -45,6 +45,7 @@
     "gulp-rollup-file": "^0.1.0",
     "gulp-size": "^2.0.0",
     "lazypipe": "^1.0.1",
+    "postcss-import": "^9.1.0",
     "rollup-plugin-babel": "^2.6.0",
     "rollup-plugin-commonjs": "^7.0.0",
     "rollup-plugin-json": "^2.1.0",
