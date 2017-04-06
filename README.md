@@ -15,7 +15,7 @@ $ bower install simpla-admin --save
 Include the Simpla library and setup a project (read more in the [getting started guide](https://www.simpla.io/docs/getting-started))
 
 ```html
-<script src="https://unpkg.com/simpla/simpla.min.js"></script>
+<script src="https://unpkg.com/simpla@^2.0.0/simpla.min.js"></script>
 <script>
   // TODO: replace 'project-id' with your project ID
   Simpla.init('project-id')
