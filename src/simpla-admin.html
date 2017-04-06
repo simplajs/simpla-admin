@@ -178,8 +178,18 @@
         SelfAttach.unobserve();
       }
 
+      /**
+       * Disable editable when admin is busy
+       * @param  {Boolean} busy Whether admin is busy
+       * @return {undefined}
+       */
       _disableEditable(busy) {
-        Simpla.editable(!busy);
+        if (busy && Simpla.getState('editable')) {
+          Simpla.editable(false);
+          this.__busyDisabled = true;
+        } else if (!busy && this.__busyDisabled) {
+          Simpla.editable(true);
+        }
       }
 
       /**
