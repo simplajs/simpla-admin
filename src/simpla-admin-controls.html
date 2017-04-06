@@ -73,6 +73,10 @@
         };
       }
 
+      .menu[disabled] {
+        pointer-events: none;
+      }
+
       .menu__item {
         @apply(--simpla-simple-dropdown-menu-item);
         cursor: pointer;
@@ -100,13 +104,14 @@
       class="button"
       busy="[[busy]]"
       on-tap="_executePrimaryAction">
-      [[_primaryActionLabel(editable, authenticated)]]
+      [[_primaryActionLabel(editable, authenticated, busy)]]
     </button>
 
     <simple-dropdown
       class="menu"
       origin="top right"
       arrow
+      disabled$="[[busy]]"
     >
       <a class="menu__item"
         hidden$="[[!editable]]"
@@ -228,9 +233,13 @@
        * @return {Object} Primary action { label: String, method: String }
        */
       get _primaryAction() {
-        let { editable, authenticated } = this,
+        let { editable, authenticated, busy } = this,
             { editableAuthed, editableNotAuthed, authedNotEditable } = PRIMARY_ACTIONS,
             action;
+
+        if (busy) {
+          return this.__primaryAction;
+        }
 
         if (editable && authenticated) {
           action = editableAuthed;
@@ -240,6 +249,7 @@
           action = editableNotAuthed;
         }
 
+        this.__primaryAction = action;
         return action;
       }
 
@@ -258,7 +268,7 @@
        * @return {undefined} Primary action label
        */
       _primaryActionLabel() {
-        return this._primaryAction && this._primaryAction.label;
+        return this._primaryAction.label;
       }
     }
     Polymer(SimplaAdminControls);

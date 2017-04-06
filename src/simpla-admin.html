@@ -92,7 +92,10 @@
             reflectToAttribute: true
           },
 
-          busy: Boolean,
+          busy: {
+            type: Boolean,
+            value: false
+          },
 
           /**
            * Simpla editable state
@@ -130,7 +133,8 @@
         };
 
         this.observers = [
-          '_toggleHidden(_editable, _authenticated)'
+          '_toggleHidden(_editable, _authenticated)',
+          '_disableEditable(busy)'
         ];
       }
 
@@ -172,6 +176,10 @@
 
         HashTracking.untrack();
         SelfAttach.unobserve();
+      }
+
+      _disableEditable(busy) {
+        Simpla.editable(!busy);
       }
 
       /**
