@@ -185,10 +185,13 @@
        */
       _disableEditable(busy) {
         if (busy && Simpla.getState('editable')) {
+          HashTracking.untrack();
           Simpla.editable(false);
           this.__busyDisabled = true;
         } else if (!busy && this.__busyDisabled) {
           Simpla.editable(true);
+          HashTracking.track();
+          this.__busyDisabled = false;
         }
       }
 
@@ -277,5 +280,6 @@
       }
     };
     Polymer(SimplaAdmin);
+    window.HashTracking = HashTracking;
   </script>
 </dom-module>

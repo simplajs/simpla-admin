@@ -11,18 +11,27 @@ function editableToHash(editable) {
 }
 
 export default {
-  _simplaObserver: {},
+  _simplaObserver: null,
+
+  _tracking: false,
 
   track() {
     hashToEditable();
-    window.addEventListener('hashchange', hashToEditable);
 
-    editableToHash(Simpla.getState('editable'));
-    this._simplaObserver = Simpla.observeState('editable', editableToHash);
+    if (!this._tracking) {
+      window.addEventListener('hashchange', hashToEditable);
+      editableToHash(Simpla.getState('editable'));
+      this._simplaObserver = Simpla.observeState('editable', editableToHash);
+      this._tracking = true;
+    }
   },
 
   untrack() {
-    window.removeEventListener('hashchange', hashToEditable);
-    this._simplaObserver.unobserve && this._simplaObserver.unobserve();
+    if (this._tracking) {
+      window.removeEventListener('hashchange', hashToEditable);
+      this._simplaObserver && this._simplaObserver.unobserve();
+      this._simplaObserver = null;
+      this._tracking = false;
+    }
   }
 }
