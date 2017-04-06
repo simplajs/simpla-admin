@@ -2,7 +2,7 @@
 ![Version][bower-badge] [![Build status][travis-badge]][travis-url] [![Bower dependencies][bowerdeps-badge]][bowerdeps-url] ![Size][size-badge] <br> 
 [![Published][webcomponents-badge]][webcomponents-url] [![Simpla slack group][slack-badge]][slack-url]
 
-Simpla-admin is a lightweight, beautiful admin interface for the [Simpla](https://www.simpla.io) content system. It provides everything you need to manage a Simpla app - login prompts, edit mode management, save controls, notifications, keyboard shortcuts, etc.
+Simpla-admin is a lightweight, beautiful admin component for the [Simpla](https://www.simpla.io) content system. It provides everything you need to manage a Simpla app - login prompts, edit mode management, save controls, notifications, keyboard shortcuts, etc.
 
 ## Installation and setup
 
@@ -12,7 +12,7 @@ Install simpla-admin with Bower (Yarn support coming soon)
 $ bower install simpla-admin --save
 ```
 
-Include the Simpla library and setup a project (read more in the [getting started guide](https://www.simpla.io/docs/getting-started))
+Include the Simpla library and setup a project (read more about [setting up Simpla](https://www.simpla.io/docs/guides/get-started))
 
 ```html
 <script src="https://unpkg.com/simpla@^2.0.0/simpla.min.js"></script>
@@ -22,7 +22,7 @@ Include the Simpla library and setup a project (read more in the [getting starte
 </script>
 ```
 
-Then just import simpla-admin into the `<head>` of your document. It will automatically attach and load itself as a singleton when Simpla is in edit mode.
+Then import simpla-admin into the `<head>` of your document. It will automatically attach and load itself as a singleton when Simpla enters edit mode.
 
 ```html
 <link rel="import" href="/bower_components/simpla-admin/simpla-admin.html" async>
@@ -30,7 +30,7 @@ Then just import simpla-admin into the `<head>` of your document. It will automa
 
 ### Polyfills for cross-browser support
 
-Simpla-admin relies on emerging standards, for full cross-browser support make sure you include the [Web Components Lite](https://github.com/webcomponents/webcomponentsjs) polyfill in your page.
+Simpla-admin relies on emerging standards, for full cross-browser support make sure you include the [Web Components Lite](https://github.com/webcomponents/webcomponentsjs) polyfill.
 
 ```html
 <script src="https://unpkg.com/webcomponents.js@^0.7.24/webcomponents-lite.min.js"></script>
@@ -38,7 +38,7 @@ Simpla-admin relies on emerging standards, for full cross-browser support make s
 
 ## Hashtracking
 
-Simpla-admin binds `#edit` to Simpla's edit mode. To enter edit mode, add `#edit` to the end of your URL. To exit edit mode, remove `#edit` from the URL. The `<simpla-admin>` element will automatically attach and load itself when you enter edit mode.
+Simpla-admin binds `#edit` to Simpla's edit mode. To enter edit mode, add `#edit` to the end of your URL. To exit edit mode, remove `#edit` from the URL. Simpla-admin will automatically attach and load itself when you enter edit mode.
 
 You can disable hashtracking with the `hashTracking` property
 
@@ -51,7 +51,7 @@ window.SimplaAdmin.hashTracking = false;
 
 If you're not authenticated when trying to enter edit mode, simpla-admin will prompt you to login with the [`<simpla-login>`](https://www.webcomponents.org/element/SimplaElements/simpla-login) element. Exiting the login modal without logging in exits edit mode. 
 
-The user will be prompted for login regardless of whether you enter edit mode via simpla-admin (eg: adding `#edit` to the URL) or imperitively with Simpla (ie: `Simpla.editable(true)`).
+The user will be prompted for login regardless of whether you enter edit mode via simpla-admin (by adding `#edit` to the URL) or programmatically with Simpla (ie: `Simpla.editable(true)`).
 
 You can disable login prompts with the `loginPrompt` property, and do your own authentication with the `Simpla.login()` method
 
