@@ -26,10 +26,10 @@
   ],
   "dependencies": {
     "polymer": "^1.6.0",
-    "simpla-notify": "^0.1.0",
-    "simpla-login": "^0.1.1",
+    "simpla-notify": "^1.0.0",
+    "simpla-login": "^1.0.0",
     "simple-dropdown": "simple-dropdown-menu#^0.1.4",
-    "simpla-styles": "^0.5.6",
+    "simpla-styles": "^1.0.0",
     "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^1.1.0",
     "iron-icon": "PolymerElements/iron-icon#^1.0.12",
     "simple-button": "^0.2.3"
