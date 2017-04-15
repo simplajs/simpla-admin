@@ -22,9 +22,15 @@ export default {
 
   observe() {
     let { editable, authenticated } = Simpla.getState(),
-      shouldAttach = editable || authenticated;
+      shouldAttach = editable || authenticated,
+      attachIfReady = () => {
+        if (document.readyState === 'interactive') {
+          conditionallyAttach(shouldAttach);
+        }
+      };
 
-    conditionallyAttach(shouldAttach);
+    attachIfReady();
+    document.onreadystatechange = () => attachIfReady();
 
     this._simplaObservers = [
       Simpla.observeState('authenticated', conditionallyAttach),
