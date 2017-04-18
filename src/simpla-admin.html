@@ -43,6 +43,7 @@
     // Utils
     import SelfAttach from './utils/selfAttach';
     import HashTracking from './utils/hashTracking';
+    import PointerEvents from './utils/pointerEvents';
 
     const LAZYLOAD_DEPENDENCIES = [
             '../simpla-login/simpla-login.html',
@@ -56,7 +57,8 @@
           DEFAULT_CONFIG = {
             hashTracking: true,
             loginPrompt: true,
-            hotkeys: true
+            hotkeys: true,
+            pointerEvents: false
           };
 
     // Globals
@@ -81,6 +83,15 @@
           hashTracking: {
             type: Boolean,
             observer: '_updateHashTracking'
+          },
+
+          /**
+           * Whether to disable pointer events on non-Simpla elements or not
+           * @type {Boolean}
+           */
+          pointerEvents: {
+            type: Boolean,
+            observer: '_updatePointerEvents'
           },
 
           /**
@@ -248,6 +259,19 @@
           HashTracking.track();
         } else {
           HashTracking.untrack();
+        }
+      }
+
+      /**
+       * Update pointer events based on pointerEvents prop
+       * @param   {Boolean} pointerEvents Whether to enable or disable pointerEvents
+       * @return  {undefined}
+       */
+      _updatePointerEvents(pointerEvents) {
+        if (pointerEvents) {
+          PointerEvents.enable();
+        } else {
+          PointerEvents.disable();
         }
       }
 

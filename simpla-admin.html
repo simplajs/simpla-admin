@@ -1,1 +1,813 @@
-<link rel="import" href="../polymer/polymer.html"> <dom-module id="simpla-admin"> <template> <style>:host{position:absolute}:host([hidden]),[hidden]{display:none!important}</style> <simpla-admin-controls editable="[[_editable]]" authenticated="[[_authenticated]]" busy="{{busy}}" on-login="login" on-save="save" hidden$="[[_loginOpen]]"> </simpla-admin-controls> <simpla-login id="login" active="{{_loginOpen}}"> </simpla-login> <simpla-notify></simpla-notify> </template> <script>!function(){"use strict";function e(e){var t=!!Simpla.getState("buffer");if(t)return e.returnValue=s,s}function t(e){e.keyCode===d.edit&&e[u]&&(e.preventDefault(),Simpla.editable(!Simpla.getState("editable")))}function i(e){e.keyCode===d.save&&e[u]&&(e.preventDefault(),document.querySelector("simpla-admin").save())}function n(e){var t=document.querySelector("simpla-admin"),i=void 0;e&&!t&&(i=document.createElement("simpla-admin"),document.body.appendChild(i))}function a(){var e=window.location.hash===m;Simpla.editable(e)}function o(e){window.location.hash=e?m:""}var r={properties:{loginPrompt:{type:Boolean,observer:"_toggleLoginPromptObserver"}},_toggleLoginPromptObserver:function(e){var t=this,i=this._simplaObservers,n=function(e){var i=t.$.login,n=new Promise(function e(t){"function"==typeof i.prompt?t():setTimeout(e.bind(null,t),10)});n.then(function(){e&&!t._authenticated&&i.prompt().then(function(e){Simpla.editable(e)})})};e?(n(Simpla.getState("editable")),i.login=Simpla.observeState("editable",n)):i.login&&i.login.unobserve()}},s="You have unsaved changes, are you sure you want to leave?",l={attached:function(){window.addEventListener("beforeunload",e)},detached:function(){window.removeEventListener("beforeunload",e)}},u="metaKey",d={edit:69,save:83},c={properties:{hotkeys:Boolean},observers:["_updateEditableListener(_authenticated, hotkeys)","_updateSaveListener(_editable, hotkeys)"],_updateEditableListener:function(e,i){e&&i?document.addEventListener("keydown",t):document.removeEventListener("keydown",t)},_updateSaveListener:function(e,t){e&&t?document.addEventListener("keydown",i):document.removeEventListener("keydown",i)},detached:function(){document.removeEventListener("keydown",t),document.removeEventListener("keydown",i)}},v={_simplaObservers:[],observe:function(){var e=Simpla.getState(),t=e.editable,i=e.authenticated,a=t||i;n(a),this._simplaObservers=[Simpla.observeState("authenticated",n),Simpla.observeState("editable",n)]},unobserve:function(){this._simplaObservers.forEach(function(e){return e.unobserve()}),this._simplaObservers=[]}},m="#edit",p={_simplaObserver:null,_tracking:!1,track:function(){a(),this._tracking||(window.addEventListener("hashchange",a),o(Simpla.getState("editable")),this._simplaObserver=Simpla.observeState("editable",o),this._tracking=!0)},untrack:function(){this._tracking&&(window.removeEventListener("hashchange",a),this._simplaObserver&&this._simplaObserver.unobserve(),this._simplaObserver=null,this._tracking=!1)}},h=function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")},b=function(){function e(e,t){for(var i=0;i<t.length;i++){var n=t[i];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,i,n){return i&&e(t.prototype,i),n&&e(t,n),t}}(),f=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var i=arguments[t];for(var n in i)Object.prototype.hasOwnProperty.call(i,n)&&(e[n]=i[n])}return e},y=["../simpla-login/simpla-login.html","../simpla-notify/simpla-notify.html","simpla-admin-controls.html"],_={saved:"changes saved",saveFailed:"something went wrong, try again?"},g={hashTracking:!0,loginPrompt:!0,hotkeys:!0};window.SimplaAdmin=f({},g,window.SimplaAdmin),v.observe(),window.SimplaAdmin.hashTracking&&p.track();var k=function(){function e(){h(this,e)}return b(e,[{key:"beforeRegister",value:function(){this.is="simpla-admin",this.properties={hashTracking:{type:Boolean,observer:"_updateHashTracking"},hidden:{type:Boolean,reflectToAttribute:!0},busy:{type:Boolean,value:!1},_editable:Boolean,_authenticated:Boolean,_dependenciesImported:Boolean,_loginOpen:Boolean,_simplaObservers:{type:Object,value:{}}},this.observers=["_toggleHidden(_editable, _authenticated)","_disableEditable(busy)"]}},{key:"ready",value:function(){f(this,window.SimplaAdmin),window.SimplaAdmin=this}},{key:"attached",value:function(){this._importDependencies(),this._syncEditableAndAuthenticated()}},{key:"detached",value:function(){var e=this;Object.keys(this._simplaObservers).forEach(function(t){e._simplaObservers[t].unobserve()}),this._simplaObservers={},p.untrack(),v.unobserve()}},{key:"_disableEditable",value:function(e){e&&Simpla.getState("editable")?(p.untrack(),Simpla.editable(!1),this.__busyDisabled=!0):!e&&this.__busyDisabled&&(Simpla.editable(!0),p.track(),this.__busyDisabled=!1)}},{key:"login",value:function(){this.$.login.open()}},{key:"save",value:function(){var e=this,t=function(){e.busy=!1,e.fire("simpla-notification",{text:_.saved})},i=function(){e.busy=!1,e.fire("simpla-notification",{text:_.saveFailed})};this.busy=!0,Simpla.save().then(t).catch(i)}},{key:"_toggleHidden",value:function(e,t){this.hidden=!e&&!t}},{key:"_updateHashTracking",value:function(e){e?p.track():p.untrack()}},{key:"_syncEditableAndAuthenticated",value:function(){var e=this,t=Simpla.getState(),i=t.editable,n=t.authenticated,a=function(t){return e._editable=t},o=function(t){return e._authenticated=t};a(i),o(n),this._simplaObservers.editable=Simpla.observeState("editable",a),this._simplaObservers.authenticated=Simpla.observeState("authenticated",o)}},{key:"_importDependencies",value:function(){var e=this;y.forEach(function(t){e.importHref(e.resolveUrl(t))})}},{key:"behaviors",get:function(){return[r,c,l]}}]),e}();Polymer(k)}()</script> </dom-module> 
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="simpla-admin">
+  <template>
+    <style>
+      /* Make sure we're always out of the flow */
+      :host {
+        position: absolute;
+      }
+      /* Patch hidden in IE */
+      :host([hidden]),
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+
+    <!-- Deps imported lazily on editable/authed -->
+    <simpla-admin-controls editable="[[_editable]]" authenticated="[[_authenticated]]" busy="{{busy}}" on-login="login" on-save="save" hidden$="[[_loginOpen]]">
+    </simpla-admin-controls>
+
+    <simpla-login id="login" active="{{_loginOpen}}">
+    </simpla-login>
+
+    <simpla-notify></simpla-notify>
+
+  </template>
+
+  <script>(function () {
+'use strict';
+
+var loginPrompt = {
+  properties: {
+
+    loginPrompt: {
+      type: Boolean,
+      observer: '_toggleLoginPromptObserver'
+    }
+
+  },
+
+  /**
+   * Observer to prompt for login if editable && !authed
+   * @param {Boolean} loginPrompt Whether to prompt for login on editable
+   * @return {undefined}
+   */
+  _toggleLoginPromptObserver: function _toggleLoginPromptObserver(loginPrompt) {
+    var _this = this;
+
+    var observers = this._simplaObservers,
+        promptLogin = function promptLogin(editable) {
+      var simplaLogin = _this.$['login'],
+          checkPrompt = new Promise(function check(resolve) {
+        if (typeof simplaLogin.prompt === 'function') {
+          resolve();
+        } else {
+          setTimeout(check.bind(null, resolve), 10);
+        }
+      });
+
+      checkPrompt.then(function () {
+        if (editable && !_this._authenticated) {
+          simplaLogin.prompt().then(function (loggedIn) {
+            Simpla.editable(loggedIn);
+          });
+        }
+      });
+    };
+
+
+    if (loginPrompt) {
+      promptLogin(Simpla.getState('editable'));
+      observers.login = Simpla.observeState('editable', promptLogin);
+    } else {
+      observers.login && observers.login.unobserve();
+    }
+  }
+};
+
+// NOTE: Custom messages are ignored by most browsers, this is an edge perk
+var UNSAVED_WARNING = 'You have unsaved changes, are you sure you want to leave?';
+
+/**
+ * Intercepts beforeunload event if Simpla buffer is dirty
+ * @param  {Event} e Beforeunload event
+ * @return {String}  Warning message (for browsers that support it)
+ */
+function warnUnsaved(e) {
+  var dirtyBuffer = !!Simpla.getState('buffer');
+
+  if (dirtyBuffer) {
+    e.returnValue = UNSAVED_WARNING;
+    return UNSAVED_WARNING;
+  }
+}
+
+var unsavedChanges = {
+  /**
+   * Init unsaved changes watchdog on attach
+   * @return {undefined}
+   */
+  attached: function attached() {
+    window.addEventListener('beforeunload', warnUnsaved);
+  },
+
+
+  /**
+   * Clean up listener on detach
+   * @return {undefined}
+   */
+  detached: function detached() {
+    window.removeEventListener('beforeunload', warnUnsaved);
+  }
+};
+
+var MODIFIER = 'metaKey';
+var KEY_CODES = {
+  edit: 69, // E key
+  save: 83 // S key
+};
+
+/**
+ * Toggles Simpla editable on hotkey combination
+ * @param  {Event} e  Keydown event
+ * @return {undefined}
+ */
+function bindEditableToHotkeys(e) {
+  if (e.keyCode === KEY_CODES.edit && e[MODIFIER]) {
+    e.preventDefault();
+    Simpla.editable(!Simpla.getState('editable'));
+  }
+}
+
+/**
+ * Executes Simpla.save on hotkey combination
+ * @param  {Event} e  Keydown event
+ * @return {undefined}
+ */
+function bindSaveToHotkeys(e) {
+  if (e.keyCode === KEY_CODES.save && e[MODIFIER]) {
+    e.preventDefault();
+    document.querySelector('simpla-admin').save();
+  }
+}
+
+var hotkeys = {
+  properties: {
+
+    hotkeys: Boolean
+
+  },
+
+  observers: ['_updateEditableListener(_authenticated, hotkeys)', '_updateSaveListener(_editable, hotkeys)'],
+
+  /**
+   * Adds or removes editable hotkey listener based on authenticated state
+   * @param  {Boolean} authenticated Current value of authenticated prop
+   * @return {undefined}
+   */
+  _updateEditableListener: function _updateEditableListener(authenticated, hotkeys) {
+    if (authenticated && hotkeys) {
+      document.addEventListener('keydown', bindEditableToHotkeys);
+    } else {
+      document.removeEventListener('keydown', bindEditableToHotkeys);
+    }
+  },
+
+
+  /**
+   * Adds or removes save hotkey listener based on editable state
+   * @param  {Boolean} authenticated Current value of authenticated prop
+   * @return {undefined}
+   */
+  _updateSaveListener: function _updateSaveListener(editable, hotkeys) {
+    if (editable && hotkeys) {
+      document.addEventListener('keydown', bindSaveToHotkeys);
+    } else {
+      document.removeEventListener('keydown', bindSaveToHotkeys);
+    }
+  },
+
+
+  /**
+   * Clean up listeners on detach
+   * @return {undefined}
+   */
+  detached: function detached() {
+    document.removeEventListener('keydown', bindEditableToHotkeys);
+    document.removeEventListener('keydown', bindSaveToHotkeys);
+  }
+};
+
+/**
+* Attaches simpla-admin to the users document
+* @param  {Boolean} shouldAttach Whether simpla-admin should be attached
+* @return {undefined}
+*/
+function conditionallyAttach(shouldAttach) {
+  var alreadyAttached = document.querySelector('simpla-admin'),
+      adminElement = void 0;
+
+  if (shouldAttach && !alreadyAttached) {
+    adminElement = document.createElement('simpla-admin');
+    document.body.appendChild(adminElement);
+  }
+}
+
+/**
+ * Self attach simpla-admin when editable or authenticated
+ * @return {undefined}
+ */
+var SelfAttach = {
+  _simplaObservers: [],
+
+  observe: function observe() {
+    var _Simpla$getState = Simpla.getState(),
+        editable = _Simpla$getState.editable,
+        authenticated = _Simpla$getState.authenticated,
+        shouldAttach = editable || authenticated;
+
+    conditionallyAttach(shouldAttach);
+
+    this._simplaObservers = [Simpla.observeState('authenticated', conditionallyAttach), Simpla.observeState('editable', conditionallyAttach)];
+  },
+  unobserve: function unobserve() {
+    this._simplaObservers.forEach(function (observer) {
+      return observer.unobserve();
+    });
+    this._simplaObservers = [];
+  }
+};
+
+var HASH = '#edit';
+
+function hashToEditable() {
+  var isEdit = window.location.hash === HASH;
+
+  Simpla.editable(isEdit);
+}
+
+function editableToHash(editable) {
+  window.location.hash = editable ? HASH : '';
+}
+
+var HashTracking = {
+  _simplaObserver: null,
+
+  _tracking: false,
+
+  track: function track() {
+    hashToEditable();
+
+    if (!this._tracking) {
+      window.addEventListener('hashchange', hashToEditable);
+      editableToHash(Simpla.getState('editable'));
+      this._simplaObserver = Simpla.observeState('editable', editableToHash);
+      this._tracking = true;
+    }
+  },
+  untrack: function untrack() {
+    if (this._tracking) {
+      window.removeEventListener('hashchange', hashToEditable);
+      this._simplaObserver && this._simplaObserver.unobserve();
+      this._simplaObserver = null;
+      this._tracking = false;
+    }
+  }
+};
+
+var IGNORED_ELEMENTS = ['simpla-admin'];
+var EVENTS_TO_BLOCK = ['click', 'tap', 'hover'];
+
+var elementStore = new Map();
+var observer = void 0;
+
+/**
+ * Cancel given event by preventing default and stopping propagation. Will only
+ *  stop the given event if the event target is editable
+ * @param  {Event} event Event to cancel
+ * @return {undefined}
+ */
+function cancelIfTargetEditable(event) {
+  if (event.target.editable) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+}
+
+/**
+ * Checks if the given node is an editable element. Editable means the element
+ *  is a Simpla Element and it is not a special ignored element e.g. simpla-admin
+ * @param  {Node}   node  Node to check if it's an editable element
+ * @return {Boolean}      True if editable element, false otherwise
+ */
+function isEditableElement(node) {
+  var prefixed = function prefixed(str) {
+    return str.indexOf('simpla-') === 0;
+  },
+      ignored = function ignored(name) {
+    return IGNORED_ELEMENTS.includes(name);
+  },
+      isEditableName = function isEditableName(name) {
+    return name && prefixed(name) && !ignored(name);
+  };
+
+  var is = void 0;
+
+  if (isEditableName(node.localName)) {
+    return true;
+  }
+
+  is = node.getAttribute && node.getAttribute('is');
+  return isEditableName(is);
+}
+
+/**
+ * Get all editable elements in the given list.
+ * @param  {(NodeList|Node[])} list List of nodes to check
+ * @return {HTMLElement[]}          Array of editable elements
+ */
+function editableElementsIn(list) {
+  return Array.prototype.filter.call(list, isEditableElement);
+}
+
+/**
+ * Gets all elements that are currently stored and have their click events blocked
+ * @param  {(NodeList|Node[])} list NodeList or Array of nodes to check
+ * @return {HTMLElement[]}          Array of elements that have click listeners blocked
+ */
+function blockedElementsIn(list) {
+  return Array.prototype.filter.call(list, function (element) {
+    return elementStore.has(element);
+  });
+}
+
+/**
+ * Cancel click events on the given element
+ * @param  {HTMLElement} element Element to cancel click events on
+ * @return {undefined}
+ */
+function cancelClicksOn(element) {
+  elementStore.set(element, 0);
+  EVENTS_TO_BLOCK.forEach(function (event) {
+    element.addEventListener(event, cancelIfTargetEditable);
+  });
+}
+
+/**
+ * Restore click events on the given element
+ * @param  {HTMLElement} element Element to restore click events on
+ * @return {undefined}
+ */
+function restoreClicksOn(element) {
+  elementStore.delete(element);
+  EVENTS_TO_BLOCK.forEach(function (event) {
+    element.removeEventListener(event, cancelIfTargetEditable);
+  });
+}
+
+/**
+ * Core observer which watches elements to block click events / restore click
+ *  events on
+ * @type {MutationObserver}
+ */
+observer = new MutationObserver(function (mutations) {
+  mutations.forEach(function (mutation) {
+    editableElementsIn(mutation.addedNodes).forEach(cancelClicksOn);
+
+    blockedElementsIn(mutation.removedNodes).forEach(restoreClicksOn);
+  });
+});
+
+var PointerEvents = {
+  /**
+   * Enable pointerEvents on non-Simpla elements
+   * @return {undefined}
+   */
+  enable: function enable() {
+    elementStore.forEach(restoreClicksOn);
+    observer.disconnect();
+  },
+
+
+  /**
+   * Disable pointerEvents on non-Simpla elements
+   * @return {undefined}
+   */
+  disable: function disable() {
+    editableElementsIn(document.querySelectorAll('*')).forEach(cancelClicksOn);
+
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+};
+
+var classCallCheck = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+
+var createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+
+
+
+
+
+
+
+var _extends = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+
+  return target;
+};
+
+var get$1 = function get$1(object, property, receiver) {
+  if (object === null) object = Function.prototype;
+  var desc = Object.getOwnPropertyDescriptor(object, property);
+
+  if (desc === undefined) {
+    var parent = Object.getPrototypeOf(object);
+
+    if (parent === null) {
+      return undefined;
+    } else {
+      return get$1(parent, property, receiver);
+    }
+  } else if ("value" in desc) {
+    return desc.value;
+  } else {
+    var getter = desc.get;
+
+    if (getter === undefined) {
+      return undefined;
+    }
+
+    return getter.call(receiver);
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var set = function set(object, property, value, receiver) {
+  var desc = Object.getOwnPropertyDescriptor(object, property);
+
+  if (desc === undefined) {
+    var parent = Object.getPrototypeOf(object);
+
+    if (parent !== null) {
+      set(parent, property, value, receiver);
+    }
+  } else if ("value" in desc && desc.writable) {
+    desc.value = value;
+  } else {
+    var setter = desc.set;
+
+    if (setter !== undefined) {
+      setter.call(receiver, value);
+    }
+  }
+
+  return value;
+};
+
+// Behaviors
+// Utils
+var LAZYLOAD_DEPENDENCIES = ['../simpla-login/simpla-login.html', '../simpla-notify/simpla-notify.html', 'simpla-admin-controls.html'];
+var NOTIFICATIONS = {
+  saved: 'changes saved',
+  saveFailed: 'something went wrong, try again?'
+};
+var DEFAULT_CONFIG = {
+  hashTracking: true,
+  loginPrompt: true,
+  hotkeys: true,
+  pointerEvents: false
+};
+
+// Globals
+window.SimplaAdmin = _extends({}, DEFAULT_CONFIG, window.SimplaAdmin);
+SelfAttach.observe();
+
+if (window.SimplaAdmin.hashTracking) {
+  HashTracking.track();
+}
+
+// Component
+
+var SimplaAdmin = function () {
+  function SimplaAdmin() {
+    classCallCheck(this, SimplaAdmin);
+  }
+
+  createClass(SimplaAdmin, [{
+    key: 'beforeRegister',
+    value: function beforeRegister() {
+      this.is = 'simpla-admin';
+
+      this.properties = {
+
+        /**
+         * Whether to bind editable to #edit
+         * @type {Boolean}
+         */
+        hashTracking: {
+          type: Boolean,
+          observer: '_updateHashTracking'
+        },
+
+        /**
+         * Whether to disable pointer events on non-Simpla elements or not
+         * @type {Boolean}
+         */
+        pointerEvents: {
+          type: Boolean,
+          observer: '_updatePointerEvents'
+        },
+
+        /**
+         * Hide admin when inactive
+         * @type {Boolean}
+         */
+        hidden: {
+          type: Boolean,
+          reflectToAttribute: true
+        },
+
+        busy: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * Simpla editable state
+         * @type {Boolean}
+         */
+        _editable: Boolean,
+
+        /**
+         * Simpla authenticated state
+         * @type {[type]}
+         */
+        _authenticated: Boolean,
+
+        /**
+         * Whether lazyload deps have been imported
+         * @type {Boolean}
+         */
+        _dependenciesImported: Boolean,
+
+        /**
+         * Whether login modal is currently open
+         * @type {Boolean}
+         */
+        _loginOpen: Boolean,
+
+        /**
+         * Store of Simpla observers
+         * @type {Object}
+         */
+        _simplaObservers: {
+          type: Object,
+          value: {}
+        }
+
+      };
+
+      this.observers = ['_toggleHidden(_editable, _authenticated)', '_disableEditable(busy)'];
+    }
+  }, {
+    key: 'ready',
+
+
+    /**
+     * Attach singleton to window on created
+     * @return {[type]} [description]
+     */
+    value: function ready() {
+      _extends(this, window.SimplaAdmin);
+      window.SimplaAdmin = this;
+    }
+
+    /**
+     * Init simpla-admin
+     * @return {undefined}
+     */
+
+  }, {
+    key: 'attached',
+    value: function attached() {
+      this._importDependencies();
+      this._syncEditableAndAuthenticated();
+    }
+
+    /**
+     * Clean up observers on detach
+     * @return {undefined}
+     */
+
+  }, {
+    key: 'detached',
+    value: function detached() {
+      var _this = this;
+
+      Object.keys(this._simplaObservers).forEach(function (observer) {
+        _this._simplaObservers[observer].unobserve();
+      });
+      this._simplaObservers = {};
+
+      HashTracking.untrack();
+      SelfAttach.unobserve();
+    }
+
+    /**
+     * Disable editable when admin is busy
+     * @param  {Boolean} busy Whether admin is busy
+     * @return {undefined}
+     */
+
+  }, {
+    key: '_disableEditable',
+    value: function _disableEditable(busy) {
+      if (busy && Simpla.getState('editable')) {
+        HashTracking.untrack();
+        Simpla.editable(false);
+        this.__busyDisabled = true;
+      } else if (!busy && this.__busyDisabled) {
+        Simpla.editable(true);
+        HashTracking.track();
+        this.__busyDisabled = false;
+      }
+    }
+
+    /**
+     * Utility method to open simpla-login
+     * @return {undefined}
+     */
+
+  }, {
+    key: 'login',
+    value: function login() {
+      this.$['login'].open();
+    }
+
+    /**
+     * Save content with Simpla
+     * @return {undefined}
+     */
+
+  }, {
+    key: 'save',
+    value: function save() {
+      var _this2 = this;
+
+      var success = function success() {
+        _this2.busy = false;
+        _this2.fire('simpla-notification', {
+          text: NOTIFICATIONS.saved
+        });
+      },
+          failed = function failed() {
+        _this2.busy = false;
+        _this2.fire('simpla-notification', {
+          text: NOTIFICATIONS.saveFailed
+        });
+      };
+
+      this.busy = true;
+
+      Simpla.save().then(success).catch(failed);
+    }
+
+    /**
+     * Observes Simpla state to hide admin when inactive
+     * @param  {Boolean} editable      Current value of the editable prop
+     * @param  {Boolean} authenticated Current value of the authenticated prop
+     * @return {undefined}
+     */
+
+  }, {
+    key: '_toggleHidden',
+    value: function _toggleHidden(editable, authenticated) {
+      this.hidden = !editable && !authenticated;
+    }
+
+    /**
+     * Update hashtracker when hashTracking prop changes
+     * @param  {Boolean} hashTracking Whether to bind editable to #edit
+     * @return {undefined}
+     */
+
+  }, {
+    key: '_updateHashTracking',
+    value: function _updateHashTracking(hashTracking) {
+      if (hashTracking) {
+        HashTracking.track();
+      } else {
+        HashTracking.untrack();
+      }
+    }
+
+    /**
+     * Update pointer events based on pointerEvents prop
+     * @param   {Boolean} pointerEvents Whether to enable or disable pointerEvents
+     * @return  {undefined}
+     */
+
+  }, {
+    key: '_updatePointerEvents',
+    value: function _updatePointerEvents(pointerEvents) {
+      if (pointerEvents) {
+        PointerEvents.enable();
+      } else {
+        PointerEvents.disable();
+      }
+    }
+
+    /**
+     * Keeps editable and authenticated properties in sync with Simpla state
+     * @return {undefined}
+     */
+
+  }, {
+    key: '_syncEditableAndAuthenticated',
+    value: function _syncEditableAndAuthenticated() {
+      var _this3 = this;
+
+      var _Simpla$getState = Simpla.getState(),
+          editable = _Simpla$getState.editable,
+          authenticated = _Simpla$getState.authenticated,
+          updateEditable = function updateEditable(editable) {
+        return _this3._editable = editable;
+      },
+          updateAuthenticated = function updateAuthenticated(authenticated) {
+        return _this3._authenticated = authenticated;
+      };
+
+      // Set initial values
+
+
+      updateEditable(editable);
+      updateAuthenticated(authenticated);
+
+      // Observe future changes
+      this._simplaObservers.editable = Simpla.observeState('editable', updateEditable);
+      this._simplaObservers.authenticated = Simpla.observeState('authenticated', updateAuthenticated);
+    }
+
+    /**
+     * Lazily import deps on attach
+     * @return {undefined}
+     */
+
+  }, {
+    key: '_importDependencies',
+    value: function _importDependencies() {
+      var _this4 = this;
+
+      LAZYLOAD_DEPENDENCIES.forEach(function (dependency) {
+        _this4.importHref(_this4.resolveUrl(dependency));
+      });
+    }
+  }, {
+    key: 'behaviors',
+    get: function get() {
+      return [loginPrompt, hotkeys, unsavedChanges];
+    }
+  }]);
+  return SimplaAdmin;
+}();
+
+
+Polymer(SimplaAdmin);
+
+}());
+</script>
+</dom-module>
