@@ -5,16 +5,13 @@ let elementStore = new Map(),
     observer;
 
 /**
- * Cancel given event by preventing default and stopping propagation. Will only
- *  stop the given event if the event target is editable
+ * Cancel given event by preventing default and stopping propagation
  * @param  {Event} event Event to cancel
  * @return {undefined}
  */
-function cancelIfTargetEditable(event) {
-  if (event.target.editable) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
+function cancel(event) {
+  event.preventDefault();
+  event.stopPropagation();
 }
 
 /**
@@ -64,7 +61,7 @@ function blockedElementsIn(list) {
 function cancelClicksOn(element) {
   elementStore.set(element, 0);
   EVENTS_TO_BLOCK.forEach(event => {
-    element.addEventListener(event, cancelIfTargetEditable);
+    element.addEventListener(event, cancel);
   });
 }
 
@@ -76,7 +73,7 @@ function cancelClicksOn(element) {
 function restoreClicksOn(element) {
   elementStore.delete(element);
   EVENTS_TO_BLOCK.forEach(event => {
-    element.removeEventListener(event, cancelIfTargetEditable);
+    element.removeEventListener(event, cancel);
   });
 }
 
