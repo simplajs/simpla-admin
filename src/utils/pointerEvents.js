@@ -1,5 +1,5 @@
 const IGNORED_ELEMENTS = [ 'simpla-admin' ];
-const EVENTS_TO_BLOCK = [ 'click', 'tap', 'hover' ];
+const EVENTS_TO_BLOCK = [ 'click', 'tap' ];
 
 let elementStore = new Map(),
     observer;
