@@ -1,8 +1,44 @@
 const ADMIN_ELEMENTS = [ 'simpla-admin' ];
 const EVENTS_TO_BLOCK = [ 'click', 'ontouchend' ];
 
-let elementStore = new Map(),
-    observer;
+let observer,
+    isolatedElements;
+
+isolatedElements = (() => {
+  let elementList;
+
+  if (typeof window.Map !== undefined) {
+    return new Map();
+  }
+
+  elementList = [];
+
+  return {
+    has(element) {
+      return elementList.indexOf(element) !== -1;
+    },
+
+    set(element, value) {
+      let index = elementList.indexOf(element);
+
+      if (index === -1) {
+        elementList.push(element);
+      }
+    },
+
+    delete(element) {
+      let index = elementList.indexOf(element);
+
+      if (index !== -1) {
+        elementList.splice(index, 1);
+      }
+    },
+
+    forEach(callback) {
+      elementList.forEach((element, i, thisArg) => callback.call(thisArg, 0, element, i));
+    }
+  }
+})();
 
 /**
  * Stops the given event from propagating, and also stops the event if event did
@@ -84,7 +120,7 @@ function simplaElementsIn(list) {
  * @return {HTMLElement[]}          Array of elements that have click listeners blocked
  */
 function blockedElementsIn(list) {
-  return Array.prototype.filter.call(list, element => elementStore.has(element));
+  return Array.prototype.filter.call(list, element => isolatedElements.has(element));
 }
 
 /**
@@ -130,7 +166,7 @@ function resetPointerEventsOn(element) {
  * @return {undefined}
  */
 function cancelClicksAndAllowPointer(element) {
-  elementStore.set(element, 0);
+  isolatedElements.set(element, 0);
   enablePointerEventsOn(element);
   EVENTS_TO_BLOCK.forEach(event => {
     element.addEventListener(event, stopAndPreventUnimportant);
@@ -143,7 +179,7 @@ function cancelClicksAndAllowPointer(element) {
  * @return {undefined}
  */
 function restoreClicksAndResetPointer(element) {
-  elementStore.delete(element);
+  isolatedElements.delete(element);
   resetPointerEventsOn(element);
   EVENTS_TO_BLOCK.forEach(event => {
     element.removeEventListener(event, stopAndPreventUnimportant);
@@ -174,7 +210,7 @@ export default {
    * @return {undefined}
    */
   enable() {
-    elementStore.forEach(restoreClicksAndResetPointer);
+    isolatedElements.forEach((_, element) => restoreClicksAndResetPointer(element));
     observer.disconnect();
     resetPointerEventsOn(document.body);
   },
