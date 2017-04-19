@@ -7,7 +7,7 @@ let elementStore = new Map(),
 /**
  * Stops the given event from propagating, and also stops the event if event did
  *  not originate from an input. This means that clicks originating in forms e.g.
- *  file inputs will still work 
+ *  file inputs will still work
  * @param  {Event} event Event to cancel
  * @return {undefined}
  */
@@ -174,7 +174,6 @@ export default {
    * @return {undefined}
    */
   enable() {
-    elementStore.forEach(resetPointerEventsOn);
     elementStore.forEach(restoreClicksAndResetPointer);
     observer.disconnect();
     resetPointerEventsOn(document.body);
