@@ -58,7 +58,7 @@
             hashTracking: true,
             loginPrompt: true,
             hotkeys: true,
-            stayInteractive: true
+            protectEditing: true
           };
 
     // Globals
@@ -89,7 +89,7 @@
            * Whether to disable pointer events on non-Simpla elements or not
            * @type {Boolean}
            */
-          stayInteractive: Boolean,
+          protectEditing: Boolean,
 
           /**
            * Hide admin when inactive
@@ -143,7 +143,7 @@
         this.observers = [
           '_toggleHidden(_editable, _authenticated)',
           '_disableEditable(busy)',
-          '_updatePointerEvents(stayInteractive, _editable)'
+          '_updatePointerEvents(protectEditing, _editable)'
         ];
       }
 
@@ -261,16 +261,16 @@
       }
 
       /**
-       * Update pointer events based on stayInteractive prop and editable state
-       * @param   {Boolean} stayInteractive Whether should stay interactive or not
-       * @param   {Boolean} editable        Whether to editable or not
+       * Update pointer events based on protectEditing option and editable state
+       * @param   {Boolean} protectEditing  Whether should disable clicks in edit mode
+       * @param   {Boolean} editable        Whether Simpla is in edit mode
        * @return  {undefined}
        */
-      _updatePointerEvents(stayInteractive, editable) {
-        if (!stayInteractive && editable) {
-          PointerEvents.disable();
-        } else {
+      _updatePointerEvents(protectEditing, editable) {
+        if (protectEditing && editable) {
           PointerEvents.enable();
+        } else {
+          PointerEvents.disable();
         }
       }
 
