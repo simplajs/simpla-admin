@@ -3,8 +3,14 @@
   <head>
     <meta charset="utf-8">
     <title>simpla-admin</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/0.7.24/webcomponents-lite.min.js"></script>
+    <script src="https://unpkg.com/webcomponents.js@^0.7.24/webcomponents-lite.min.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
+
+    <!-- Setup Simpla -->
+    <script src="https://unpkg.com/simpla@^2.0.0"></script>
+    <script>
+      Simpla.init('dummy');
+    </script>
 
     <!-- Import the element to test -->
     <link rel="import" href="../simpla-admin.html">
@@ -13,7 +19,7 @@
   <body>
     <test-fixture id="default">
       <template>
-        <simpla-admin></simpla-admin>
+        <!-- Simpla-admin auto-imports -->
       </template>
     </test-fixture>
     <script>
@@ -22,10 +28,6 @@
 
         beforeEach(function() {
           component = fixture('default');
-        });
-
-        it('is okay', function() {
-          expect(component).to.be.ok;
         });
 
       });
