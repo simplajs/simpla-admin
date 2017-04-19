@@ -43,7 +43,7 @@ Simpla-admin binds `#edit` to Simpla's edit mode. To enter edit mode, add `#edit
 You can disable hashtracking with the `hashTracking` property
 
 ```js
-window.SimplaAdmin = window.SimplaAdmin || {}
+window.SimplaAdmin = window.SimplaAdmin || {};
 window.SimplaAdmin.hashTracking = false;
 ```
 
@@ -56,7 +56,7 @@ The user will be prompted for login regardless of whether you enter edit mode vi
 You can disable login prompts with the `loginPrompt` property, and do your own authentication with the `Simpla.login()` method
 
 ```js
-window.SimplaAdmin = window.SimplaAdmin || {}
+window.SimplaAdmin = window.SimplaAdmin || {};
 window.SimplaAdmin.loginPrompt = false;
 ```
 
@@ -72,8 +72,19 @@ Shortcut           | Description
 You can disable all hotkeys with the `hotkeys` property
 
 ```js
-window.SimplaAdmin = window.SimplaAdmin || {}
+window.SimplaAdmin = window.SimplaAdmin || {};
 window.SimplaAdmin.hotkeys = false;
+```
+
+## Click disabling
+
+Simpla-admin makes a page non-interactive while you are editing it, so you can work with content inside interactive elements (links, buttons, lightboxes) without accidentally leaving the page. To re-enable clicks, toggle off edit mode with `cmd`/`ctrl` + `e` or the simpla-admin menu. Your changes will remain in the local buffer until you either save or reload the page.
+
+You can stop this behavior with the `protectEditing` property
+
+```js
+window.SimplaAdmin = window.SimplaAdmin || {};
+window.SimplaAdmin.protectEditing = false;
 ```
 
 ## Notifications
@@ -105,7 +116,7 @@ Property       | Type    | Default | Description
 Set properties on `window.SimplaAdmin` directly 
 
 ```js
-window.SimplaAdmin = window.SimplaAdmin || {}
+window.SimplaAdmin = window.SimplaAdmin || {};
 window.SimplaAdmin.hashTracking = false;
 ```
   
