@@ -134,7 +134,7 @@ MIT © Simpla <friends@simpla.io>
 [travis-url]: https://travis-ci.org/SimplaElements/simpla-admin
 [bowerdeps-badge]: https://img.shields.io/gemnasium/SimplaElements/simpla-admin.svg
 [bowerdeps-url]: https://gemnasium.com/bower/simpla-admin
-[size-badge]: https://badges.herokuapp.com/size/github/SimplaElements/simpla-admin/master/simpla-admin.html?gzip=true&color=blue
+[size-badge]: https://badges.herokuapp.com/size/github/SimplaElements/simpla-admin/master/simpla-admin.html?gzip=true
 [webcomponents-badge]: https://img.shields.io/badge/webcomponents.org-published-blue.svg
 [webcomponents-url]: https://www.webcomponents.org/element/SimplaElements/simpla-admin
 [slack-badge]: http://slack.simpla.io/badge.svg
