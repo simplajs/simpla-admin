@@ -5,12 +5,17 @@ let elementStore = new Map(),
     observer;
 
 /**
- * Cancel given event by preventing default and stopping propagation
+ * Stops the given event from propagating, and also stops the event if event did
+ *  not originate from an input. This means that clicks originating in forms e.g.
+ *  file inputs will still work 
  * @param  {Event} event Event to cancel
  * @return {undefined}
  */
-function cancel(event) {
-  event.preventDefault();
+function stopAndPreventUnimportant(event) {
+  if (!event.path[0].localName || event.path[0].localName !== 'input') {
+    event.preventDefault();
+  }
+
   event.stopPropagation();
 }
 
@@ -128,7 +133,7 @@ function cancelClicksAndAllowPointer(element) {
   elementStore.set(element, 0);
   enablePointerEventsOn(element);
   EVENTS_TO_BLOCK.forEach(event => {
-    element.addEventListener(event, cancel);
+    element.addEventListener(event, stopAndPreventUnimportant);
   });
 }
 
@@ -141,7 +146,7 @@ function restoreClicksAndResetPointer(element) {
   elementStore.delete(element);
   resetPointerEventsOn(element);
   EVENTS_TO_BLOCK.forEach(event => {
-    element.removeEventListener(event, cancel);
+    element.removeEventListener(event, stopAndPreventUnimportant);
   });
 }
 
