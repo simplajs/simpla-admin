@@ -58,7 +58,7 @@
             hashTracking: true,
             loginPrompt: true,
             hotkeys: true,
-            pointerEvents: true
+            stayInteractive: true
           };
 
     // Globals
@@ -89,7 +89,7 @@
            * Whether to disable pointer events on non-Simpla elements or not
            * @type {Boolean}
            */
-          pointerEvents: Boolean,
+          stayInteractive: Boolean,
 
           /**
            * Hide admin when inactive
@@ -143,7 +143,7 @@
         this.observers = [
           '_toggleHidden(_editable, _authenticated)',
           '_disableEditable(busy)',
-          '_updatePointerEvents(pointerEvents, _editable)'
+          '_updatePointerEvents(stayInteractive, _editable)'
         ];
       }
 
@@ -261,16 +261,16 @@
       }
 
       /**
-       * Update pointer events based on pointerEvents prop and editable state
-       * @param   {Boolean} pointerEvents Whether to enable or disable pointerEvents
-       * @param   {Boolean} editable      Whether to editable or not
+       * Update pointer events based on stayInteractive prop and editable state
+       * @param   {Boolean} stayInteractive Whether should stay interactive or not
+       * @param   {Boolean} editable        Whether to editable or not
        * @return  {undefined}
        */
-      _updatePointerEvents(pointerEvents, editable) {
-        if (pointerEvents && editable) {
-          PointerEvents.enable();
-        } else {
+      _updatePointerEvents(stayInteractive, editable) {
+        if (!stayInteractive && editable) {
           PointerEvents.disable();
+        } else {
+          PointerEvents.enable();
         }
       }
 
