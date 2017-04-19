@@ -102,6 +102,15 @@ function enablePointerEventsOn(element) {
 }
 
 /**
+ * Explicitly disable pointer events on given element by setting to 'none'
+ * @param  {HTMLElement} element HTML to set disable pointer events on
+ * @return {undefined}
+ */
+function disablePointerEventsOn(element) {
+  setPointerEventsOn(element, 'none');
+}
+
+/**
  * Reset pointer events by setting inline value to ''
  * @param  {HTMLElement} element Element to reset pointer events on
  * @return {undefined}
@@ -160,6 +169,7 @@ export default {
    * @return {undefined}
    */
   enable() {
+    elementStore.forEach(resetPointerEventsOn);
     elementStore.forEach(restoreClicksAndResetPointer);
     observer.disconnect();
     resetPointerEventsOn(document.body);
@@ -177,7 +187,7 @@ export default {
     simplaElementsIn(allElements)
       .forEach(enablePointerEventsOn);
 
-    enablePointerEventsOn(document.body);
+    disablePointerEventsOn(document.body);
     observer.observe(document.body, { childList: true, subtree: true });
   }
 }
