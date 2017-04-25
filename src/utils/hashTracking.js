@@ -18,12 +18,15 @@ export default {
   track() {
     hashToEditable();
 
-    if (!this._tracking) {
-      window.addEventListener('hashchange', hashToEditable);
-      editableToHash(Simpla.getState('editable'));
-      this._simplaObserver = Simpla.observeState('editable', editableToHash);
-      this._tracking = true;
+    if (this._tracking) {
+      return;
     }
+
+    window.addEventListener('hashchange', hashToEditable);
+    editableToHash(Simpla.getState('editable'));
+
+    this._simplaObserver = Simpla.observeState('editable', editableToHash);
+    this._tracking = true;
   },
 
   untrack() {

@@ -35,15 +35,25 @@ export default {
   _simplaObservers: [],
 
   observe() {
-    let { editable, authenticated } = Simpla.getState(),
-        shouldAttach = editable || authenticated;
+    let checkSimpla = new Promise(function check(resolve) {
+      if (window.Simpla) {
+        resolve();
+      } else {
+        setTimeout(check.bind(null, resolve), 1);
+      }
+    });
 
-    conditionallyAttach(shouldAttach);
+    checkSimpla.then(() => {
+      let { editable, authenticated } = Simpla.getState(),
+          shouldAttach = editable || authenticated;
 
-    this._simplaObservers = [
-      Simpla.observeState('authenticated', conditionallyAttach),
-      Simpla.observeState('editable', conditionallyAttach)
-    ];
+      conditionallyAttach(shouldAttach);
+
+      this._simplaObservers = [
+        Simpla.observeState('authenticated', conditionallyAttach),
+        Simpla.observeState('editable', conditionallyAttach)
+      ];
+    });
   },
 
   unobserve() {
