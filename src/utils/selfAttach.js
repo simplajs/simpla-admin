@@ -1,3 +1,5 @@
+import waitFor from 'p-wait-for';
+
 function attachWhenReady(element) {
   let attachIfReady = () => {
     if (document.body) {
@@ -35,15 +37,7 @@ export default {
   _simplaObservers: [],
 
   observe() {
-    let checkSimpla = new Promise(function check(resolve) {
-      if (window.Simpla) {
-        resolve();
-      } else {
-        setTimeout(check.bind(null, resolve), 1);
-      }
-    });
-
-    checkSimpla.then(() => {
+    waitFor(() => !!window.Simpla, 1).then(() => {
       let { editable, authenticated } = Simpla.getState(),
           shouldAttach = editable || authenticated;
 

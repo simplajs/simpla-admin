@@ -1,3 +1,5 @@
+import waitFor from 'p-wait-for';
+
 let HASH = '#edit';
 
 function hashToEditable() {
@@ -16,17 +18,19 @@ export default {
   _tracking: false,
 
   track() {
-    hashToEditable();
+    waitFor(() => !!window.Simpla, 1).then(() => {
+      hashToEditable();
 
-    if (this._tracking) {
-      return;
-    }
+      if (this._tracking) {
+        return;
+      }
 
-    window.addEventListener('hashchange', hashToEditable);
-    editableToHash(Simpla.getState('editable'));
+      window.addEventListener('hashchange', hashToEditable);
+      editableToHash(Simpla.getState('editable'));
 
-    this._simplaObserver = Simpla.observeState('editable', editableToHash);
-    this._tracking = true;
+      this._simplaObserver = Simpla.observeState('editable', editableToHash);
+      this._tracking = true;
+    });
   },
 
   untrack() {

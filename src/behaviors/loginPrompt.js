@@ -1,3 +1,5 @@
+import waitFor from 'p-wait-for';
+
 export default {
   properties: {
 
@@ -17,15 +19,9 @@ export default {
     let { _simplaObservers: observers } = this,
         promptLogin = (editable) => {
           let simplaLogin = this.$['login'],
-              checkPrompt = new Promise(function check(resolve) {
-                if (typeof simplaLogin.prompt === 'function') {
-                  resolve();
-                } else {
-                  setTimeout(check.bind(null, resolve), 10);
-                }
-              });
+              promptAvailable = () => typeof simplaLogin.prompt === 'function';
 
-          checkPrompt.then(() => {
+          waitFor(promptAvailable, 1).then(() => {
             if (editable && !this._authenticated) {
               simplaLogin.prompt().then(loggedIn => {
                 Simpla.editable(loggedIn)
