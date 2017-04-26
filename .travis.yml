@@ -8,7 +8,6 @@ before_script:
 - bower install
 script: xvfb-run wct
 addons:
-  firefox: latest
   apt:
     sources:
       - google-chrome
