@@ -22,10 +22,12 @@ const minify = require('gulp-htmlmin');
 // JS
 const eslint = require('gulp-eslint');
 const rollup = require('gulp-rollup-file');
+const rollupif = require('rollup-plugin-conditional');
 const resolve = require('rollup-plugin-node-resolve');
 const commonJs = require('rollup-plugin-commonjs');
 const babel = require('rollup-plugin-babel');
-const json = require('rollup-plugin-json');
+const uglify = require('rollup-plugin-uglify');
+const uglifyHarmony = require('uglify-js-harmony').minify;
 
 // CSS
 const postcss = require('gulp-postcss');
@@ -40,10 +42,12 @@ const bs = browserSync.create(),
           plugins: [
             resolve({ main: true, browser: true }),
             commonJs(),
-            json(),
             babel({
               exclude: 'node_modules/**/*'
-            })
+            }),
+            rollupif(!argv.debug, [
+              uglify({}, uglifyHarmony )
+            ])
           ],
           format: 'iife'
         },
@@ -64,7 +68,7 @@ const bs = browserSync.create(),
           keepClosingSlash: true,
           customAttrAssign: [/\$=/],
           minifyCSS: true,
-          minifyJS: true
+          minifyJS: false
         },
         browserSync: {
           server: {
@@ -92,21 +96,17 @@ gulp.task('build', () => {
   return gulp.src(['src/*.html'])
     .pipe(errorNotifier())
 
-    // Inline assets
     .pipe(inline(OPTIONS.inline))
 
-    // JS
     .pipe(scripts.extract('script'))
       .pipe(processJs())
     .pipe(scripts.restore())
 
-    // CSS
     .pipe(styles.extract('style'))
       .pipe(postcss(OPTIONS.postcss))
     .pipe(styles.restore())
 
     .pipe(gulpif(!argv.debug, minify(OPTIONS.HTMLmin)))
-
     .pipe(size({ gzip: true }))
   .pipe(gulp.dest('.'))
 });
@@ -141,7 +141,7 @@ gulp.task('watch:src', () => gulp.watch(['src/**/*'], () => gulprun('build', 're
 gulp.task('watch:tests', () => gulp.watch(['src/**/*', 'test/**/*'], () => gulprun('build:tests')))
 gulp.task('watch', ['watch:src', 'watch:tests']);
 
-gulp.task('serve', () => bs.init(OPTIONS.browserSync));
+gulp.task('demo', () => bs.init(OPTIONS.browserSync));
 gulp.task('refresh', () => bs.reload());
 
-gulp.task('default', ['build', 'serve', 'watch']);
+gulp.task('default', ['build', 'demo', 'watch']);

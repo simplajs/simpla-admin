@@ -400,6 +400,10 @@ async@^2.1.2:
   dependencies:
     lodash "^4.14.0"
 
+async@~0.2.6:
+  version "0.2.10"
+  resolved "https://registry.yarnpkg.com/async/-/async-0.2.10.tgz#b6bbe0b0674b9d719708ca38de8c237cb526c3d1"
+
 asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
@@ -4801,6 +4805,10 @@ rollup-plugin-commonjs@^7.0.0:
     resolve "^1.1.7"
     rollup-pluginutils "^2.0.1"
 
+rollup-plugin-conditional@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-conditional/-/rollup-plugin-conditional-1.1.1.tgz#73309268801cb5cc83d2d8fe680208a65d97a517"
+
 rollup-plugin-file@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/rollup-plugin-file/-/rollup-plugin-file-0.1.1.tgz#b8553c34bd41adaeb475fc425cac04914aa052a2"
@@ -4820,6 +4828,12 @@ rollup-plugin-node-resolve@^2.0.0:
     browser-resolve "^1.11.0"
     builtin-modules "^1.1.0"
     resolve "^1.1.6"
+
+rollup-plugin-uglify@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-uglify/-/rollup-plugin-uglify-1.0.2.tgz#d4aa6f5df13522eae1ba17780c7c4c7096038359"
+  dependencies:
+    uglify-js "^2.6.1"
 
 rollup-pluginutils@^1.5.0, rollup-pluginutils@^1.5.2:
   version "1.5.2"
@@ -5526,7 +5540,16 @@ ua-parser-js@0.7.12:
   version "0.7.12"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.12.tgz#04c81a99bdd5dc52263ea29d24c6bf8d4818a4bb"
 
-uglify-js@2.8.x, uglify-js@~2.8.22:
+uglify-js-harmony@^2.7.5:
+  version "2.7.5"
+  resolved "https://registry.yarnpkg.com/uglify-js-harmony/-/uglify-js-harmony-2.7.5.tgz#48a99a9f62c8247f1e63e9ef9020b2d7cc1fd6e7"
+  dependencies:
+    async "~0.2.6"
+    source-map "~0.5.1"
+    uglify-to-browserify "~1.0.0"
+    yargs "~3.10.0"
+
+uglify-js@2.8.x, uglify-js@^2.6.1, uglify-js@~2.8.22:
   version "2.8.22"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.8.22.tgz#d54934778a8da14903fa29a326fb24c0ab51a1a0"
   dependencies:
