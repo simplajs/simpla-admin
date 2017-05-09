@@ -7,9 +7,13 @@ const UNSAVED_WARNING = 'You have unsaved changes, are you sure you want to leav
  * @return {String}  Warning message (for browsers that support it)
  */
 function warnUnsaved(e) {
-  let dirtyBuffer = !!Simpla.getState('buffer');
+  let buffer = Simpla.getState('buffer'),
+      isDirty;
 
-  if (dirtyBuffer) {
+  // Feature checks to see if buffer state exists, then checks to see if dirty
+  isDirty = buffer && Object.keys(buffer).some(path => buffer[path].modified);
+
+  if (isDirty) {
     e.returnValue = UNSAVED_WARNING;
     return UNSAVED_WARNING;
   }
