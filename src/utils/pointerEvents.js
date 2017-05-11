@@ -1,4 +1,4 @@
-const ADMIN_ELEMENTS = [ 'simpla-admin' ];
+const ADMIN_ELEMENTS = [ 'simpla-admin', 'simpla-login', 'simpla-admin-controls', 'simpla-notify' ];
 const EVENTS_TO_BLOCK = [ 'click', 'ontouchend' ];
 
 let observer,
