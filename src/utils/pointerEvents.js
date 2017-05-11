@@ -1,4 +1,3 @@
-const ADMIN_ELEMENTS = [ 'simpla-admin', 'simpla-login', 'simpla-admin-controls', 'simpla-notify' ];
 const EVENTS_TO_BLOCK = [ 'click', 'ontouchend' ];
 
 let observer,
@@ -55,6 +54,10 @@ function stopAndPreventUnimportant(event) {
   event.stopPropagation();
 }
 
+function elementsIn(list) {
+  return Array.prototype.filter.call(list, node => node.nodeType === 1);
+}
+
 /**
  * Check if given element name is Simpla name
  * @param  {string}  name Name to check
@@ -71,47 +74,34 @@ function isSimplaName(name) {
  * @param  {Node}  node   Node to check
  * @return {Boolean}      True if node is a Simpla Element
  */
-function isSimplaElement(node) {
-  if (isSimplaName(node.localName)) {
+function isSimplaElement(element) {
+  if (isSimplaName(element.localName)) {
     return true;
   }
 
-  return node.getAttribute && isSimplaName(node.getAttribute('is'));
+  return isSimplaName(element.getAttribute('is'));
 }
 
 /**
- * Checks if the given node is an editable element. Editable means the element
- *  is a Simpla Element and it is not a special ignored element e.g. simpla-admin
- * @param  {Node}   node  Node to check if it's an editable element
- * @return {Boolean}      True if editable element, false otherwise
- */
-function isEditableElement(node) {
-  const ignored = (name) => ADMIN_ELEMENTS.includes(name),
-        isEditableName = (name) => isSimplaName(name) && !ignored(name);
-
-  if (isEditableName(node.localName)) {
-    return true;
-  }
-
-  return isEditableName(node.getAttribute && node.getAttribute('is'));
-}
-
-/**
- * Get all editable elements in the given list.
+ * Get all editable elements in the given list
  * @param  {(NodeList|Node[])} list List of nodes to check
  * @return {HTMLElement[]}          Array of editable elements
  */
-function editableElementsIn(list) {
-  return Array.prototype.filter.call(list, isEditableElement);
+function ignoredElementsIn(elements) {
+  const shouldIgnore = element => isSimplaElement(element) ||
+                                  !document.querySelector('simpla-admin').contains(element) ||
+                                  !element.shadowRoot === root;
+
+  return elements.filter(shouldIgnore);
 }
 
 /**
- * Get all simpla elements in the given list.
+ * Get all simpla elements in the given list
  * @param  {(NodeList|Node[])} list List of nodes to check
  * @return {HTMLElement[]}          Array of simpla elements
  */
-function simplaElementsIn(list) {
-  return Array.prototype.filter.call(list, isSimplaElement);
+function simplaElementsIn(elements) {
+  return elements.filter(isSimplaElement);
 }
 
 /**
@@ -119,8 +109,8 @@ function simplaElementsIn(list) {
  * @param  {(NodeList|Node[])} list NodeList or Array of nodes to check
  * @return {HTMLElement[]}          Array of elements that have click listeners blocked
  */
-function blockedElementsIn(list) {
-  return Array.prototype.filter.call(list, element => isolatedElements.has(element));
+function blockedElementsIn(elements) {
+  return elements.filter(element => isolatedElements.has(element));
 }
 
 /**
@@ -193,13 +183,16 @@ function restoreClicksAndResetPointer(element) {
  */
 observer = new MutationObserver((mutations) => {
   mutations.forEach(mutation => {
-    editableElementsIn(mutation.addedNodes)
+    const addedElements = elementsIn(mutation.addedNodes),
+          removedElemenets = elementsIn(mutation.removedNodes);
+
+    ignoredElementsIn(addedElements)
       .forEach(cancelClicksAndAllowPointer);
 
-    simplaElementsIn(mutation.addedNodes)
+    simplaElementsIn(addedElements)
       .forEach(enablePointerEventsOn);
 
-    blockedElementsIn(mutation.removedNodes)
+    blockedElementsIn(removedElemenets)
       .forEach(restoreClicksAndResetPointer);
   });
 })
@@ -220,8 +213,9 @@ export default {
    * @return {undefined}
    */
   disable() {
-    const allElements = document.querySelectorAll('*');
-    editableElementsIn(allElements)
+    const allElements = elementsIn(document.querySelectorAll('*'));
+
+    ignoredElementsIn(allElements)
       .forEach(cancelClicksAndAllowPointer);
 
     simplaElementsIn(allElements)
