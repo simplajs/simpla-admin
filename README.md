@@ -1,6 +1,5 @@
 # Simpla Admin
-![Version][bower-badge] [![Build status][travis-badge]][travis-url] [![Bower dependencies][bowerdeps-badge]][bowerdeps-url] ![Size][size-badge] <br> 
-[![Published][webcomponents-badge]][webcomponents-url] [![Simpla slack group][slack-badge]][slack-url]
+![Version][bower-badge] [![Build status][travis-badge]][travis-url] ![Size][size-badge] [![Published][webcomponents-badge]][webcomponents-url] [![Simpla slack group][slack-badge]][slack-url]
 
 Simpla-admin is a lightweight, beautiful admin component for the [Simpla](https://www.simpla.io) content system. It provides everything you need to manage a Simpla app - login prompts, edit mode management, save controls, notifications, keyboard shortcuts, etc.
 
@@ -15,7 +14,7 @@ $ bower install simpla-admin --save
 Include the Simpla library and setup a project (read more about [setting up Simpla](https://www.simpla.io/docs/guides/get-started))
 
 ```html
-<script src="https://unpkg.com/simpla@^2.0.0/simpla.min.js"></script>
+<script src="https://unpkg.com/simpla@^2.0.0"></script>
 <script>
   // TODO: replace 'project-id' with your project ID
   Simpla.init('project-id')
@@ -76,7 +75,7 @@ window.SimplaAdmin = window.SimplaAdmin || {};
 window.SimplaAdmin.hotkeys = false;
 ```
 
-## Click disabling
+## Accidental click protection
 
 Simpla-admin makes a page non-interactive while you are editing it, so you can work with content inside interactive elements (links, buttons, lightboxes) without accidentally leaving the page. To re-enable clicks, toggle off edit mode with `cmd`/`ctrl` + `e` or the simpla-admin menu. Your changes will remain in the local buffer until you either save or reload the page.
 
@@ -107,33 +106,31 @@ Simpla-admin attaches itself to `window` as a global singleton, you can access i
 
 ### Properties
 
-Property       | Type    | Default | Description                                                   
--------------- | ------- | ------- | -----------                                                   
-`hashTracking` | Boolean | `true`  | Whether to bind edit mode to `#edit` in the URL
-`loginPrompt`  | Boolean | `true`  | Whether to visually prompt for login if the user is not authenticated
-`hotkeys`      | Boolean | `true`  | Whether to enable keyboard shortcuts for common actions
+Property         | Type    | Default | Description                                                   
+---------------- | ------- | ------- | -----------                                                   
+`hashTracking`   | Boolean | `true`  | Whether to bind edit mode to `#edit` in the URL
+`loginPrompt`    | Boolean | `true`  | Whether to visually prompt for login if the user is not authenticated
+`hotkeys`        | Boolean | `true`  | Whether to enable keyboard shortcuts for common actions
+`protectEditing` | Boolean | `true`  | Whether to enable accidental click protection while editing
 
 Set properties on `window.SimplaAdmin` directly 
 
 ```js
 window.SimplaAdmin = window.SimplaAdmin || {};
-window.SimplaAdmin.hashTracking = false;
+SimplaAdmin.hashTracking = false;
 ```
   
 ## Contributing
 
 If you find any issues with simpla-admin please report them! If you'd like to see a new feature in supported file an issue or let us know in Simpla's public [Slack group](https://slack.simpla.io). We also happily accept PRs. 
 
----
+***
 
-MIT © Simpla <friends@simpla.io>
+MIT © Simpla
 
 [bower-badge]: https://img.shields.io/bower/v/simpla-admin.svg
-[bowerlicense-badge]: https://img.shields.io/bower/l/simpla-admin.svg
 [travis-badge]: https://img.shields.io/travis/SimplaElements/simpla-admin.svg
 [travis-url]: https://travis-ci.org/SimplaElements/simpla-admin
-[bowerdeps-badge]: https://img.shields.io/gemnasium/SimplaElements/simpla-admin.svg
-[bowerdeps-url]: https://gemnasium.com/bower/simpla-admin
 [size-badge]: https://badges.herokuapp.com/size/github/SimplaElements/simpla-admin/master/simpla-admin.html?gzip=true
 [webcomponents-badge]: https://img.shields.io/badge/webcomponents.org-published-blue.svg
 [webcomponents-url]: https://www.webcomponents.org/element/SimplaElements/simpla-admin
