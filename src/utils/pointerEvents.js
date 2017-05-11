@@ -54,10 +54,6 @@ function stopAndPreventUnimportant(event) {
   event.stopPropagation();
 }
 
-function elementsIn(list) {
-  return Array.prototype.filter.call(list, node => node.nodeType === 1);
-}
-
 /**
  * Check if given element name is Simpla name
  * @param  {string}  name Name to check
@@ -70,8 +66,17 @@ function isSimplaName(name) {
 }
 
 /**
+ * Returns an array of elements in a nodeList
+ * @param  {NodeList} list Nodelist to filter
+ * @return {HTMLElement[]} Array of element nodes
+ */
+function elementsIn(list) {
+  return Array.prototype.filter.call(list, node => node.nodeType === 1);
+}
+
+/**
  * Check if the given element is a Simpla Element
- * @param  {Node}  node   Node to check
+ * @param  {HTMLElement}  element  Element to check
  * @return {Boolean}      True if node is a Simpla Element
  */
 function isSimplaElement(element) {
@@ -84,8 +89,8 @@ function isSimplaElement(element) {
 
 /**
  * Get all editable elements in the given list
- * @param  {(NodeList|Node[])} list List of nodes to check
- * @return {HTMLElement[]}          Array of editable elements
+ * @param  {Array} elements Array of elements to check
+ * @return {HTMLElement[]}  Array of editable elements
  */
 function ignoredElementsIn(elements) {
   const shouldIgnore = element => isSimplaElement(element) ||
@@ -97,8 +102,8 @@ function ignoredElementsIn(elements) {
 
 /**
  * Get all simpla elements in the given list
- * @param  {(NodeList|Node[])} list List of nodes to check
- * @return {HTMLElement[]}          Array of simpla elements
+ * @param  {Array} elements  Array of elements to check
+ * @return {HTMLElement[]}   Array of simpla elements
  */
 function simplaElementsIn(elements) {
   return elements.filter(isSimplaElement);
@@ -106,8 +111,8 @@ function simplaElementsIn(elements) {
 
 /**
  * Gets all elements that are currently stored and have their click events blocked
- * @param  {(NodeList|Node[])} list NodeList or Array of nodes to check
- * @return {HTMLElement[]}          Array of elements that have click listeners blocked
+ * @param  {Array} elements  Array of elements to check
+ * @return {HTMLElement[]}   Array of elements that have click listeners blocked
  */
 function blockedElementsIn(elements) {
   return elements.filter(element => isolatedElements.has(element));
