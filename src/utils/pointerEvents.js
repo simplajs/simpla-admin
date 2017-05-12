@@ -94,8 +94,8 @@ function isSimplaElement(element) {
  */
 function ignoredElementsIn(elements) {
   const shouldIgnore = element => isSimplaElement(element) ||
-                                  !document.querySelector('simpla-admin').contains(element) ||
-                                  !element.shadowRoot === root;
+                                  window.SimplaAdmin.contains(element) ||
+                                  !!element.shadowRoot;
 
   return elements.filter(shouldIgnore);
 }
