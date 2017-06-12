@@ -1,7 +1,7 @@
 # Simpla Admin
 [![Build status][travis-badge]][travis-url] ![Size][size-badge] ![Version][bower-badge] [![Published][webcomponents-badge]][webcomponents-url] [![Simpla slack group][slack-badge]][slack-url]
 
-Simpla-admin is a lightweight, beautiful admin component for the [Simpla](https://www.simpla.io) content system. It provides everything you need to manage a Simpla app - login prompts, edit mode management, save controls, notifications, keyboard shortcuts - while remaining unobtrusive and minimal.
+Simpla-admin is a lightweight, beautiful admin component for the [Simpla](https://www.simpla.io) content system. It provides everything you need to manage a Simpla app (login prompts, edit mode management, save controls, notifications, keyboard shortcuts) while remaining unobtrusive and minimal.
 
 ## Installation and setup
 
@@ -11,7 +11,7 @@ Install simpla-admin with Bower (Yarn support coming soon)
 $ bower i simpla-admin --save
 ```
 
-Then import it into the `<head>` of your page. It will automatically attach and load itself as a singleton when Simpla enters edit mode.
+[Setup Simpla](https://www.simpla.io/docs/guides/get-started) on your page, then import simpla-admin into your `<head>`. It will automatically attach and load itself as a singleton when Simpla enters edit mode.
 
 ```html
 <link rel="import" href="/bower_components/simpla-admin/simpla-admin.html" async>
@@ -44,7 +44,7 @@ window.SimplaAdmin.loginPrompt = false;
 
 ## Hotkeys
 
-Simpla-admin binds keyboard shortcuts to several common actions:
+Simpla-admin binds keyboard shortcuts to several common actions. On Mac the command key is used, on Windows the control key is used.
 
 Shortcut           | Description                              
 ------------------ | -----------                              
@@ -60,7 +60,7 @@ window.SimplaAdmin.hotkeys = false;
 
 ## Accidental click protection
 
-Simpla-admin makes a page non-interactive while it's being edited, so users can edit content inside interactive elements (links, buttons, lightboxes) without accidentally leaving the page. To re-enable clicks, toggle off edit mode with `cmd`/`ctrl` + `e` or the simpla-admin menu. Your changes will remain in the local buffer until you either save or reload the page.
+Simpla-admin makes a page non-interactive while it's being edited, so users can edit content inside interactive elements (links, buttons, lightboxes) without accidentally leaving the page. Toggle off edit mode to re-enable clicks, your changes will remain in the local buffer until you either save or reload the page.
 
 You can disable edit mode protection with the `protectEditing` property
 
