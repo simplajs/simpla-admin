@@ -4,7 +4,7 @@ Simpla-admin attaches itself to `window` as a global singleton, you can access i
 
 ## Properties
 
-Custom properties of `<simpla-admin>`, available on the `window.SimplaAdmin` singleton
+Properties of `<simpla-admin>` are available on the `window.SimplaAdmin` singleton
 
 Property         | Type      | Default | Description                                                   
 ---------------- | --------- | ------- | -----------                                                   
@@ -17,3 +17,23 @@ Property         | Type      | Default | Description
 window.SimplaAdmin = window.SimplaAdmin || {};
 SimplaAdmin.hashTracking = false;
 ```
+
+## Custom events
+
+Event                 | Properties      | Description                                                                                                                                              
+--------------------- | --------------- | -----------                                                                                                                                              
+`simpla-notification` | `text {String}` | Notifications for [`<simpla-notify>`][simpla-notify], containing a `text` property with notification content 
+
+It's possible to fire your own notification events for simpla-notify (bundled with simpla-admin)
+
+```js
+var notification = new CustomEvent('simpla-notification', { 
+  detail: {
+    text: 'something happened'
+  } 
+});
+
+window.dispatchEvent(notification);
+```
+
+[simpla-notify]: http://webcomponents.org/element/SimplaElements/simpla-notify
