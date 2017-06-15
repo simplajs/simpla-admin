@@ -19,6 +19,9 @@
   "demos": {
     "Demo": "demo/index.html"
   },
+  "pages": {
+    "API Reference": "API.md"
+  },
   "ignore": [
     "*",
     "!*.html",

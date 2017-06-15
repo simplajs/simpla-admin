@@ -1,7 +1,23 @@
 # Simpla Admin
 [![Build status][travis-badge]][travis-url] ![Size][size-badge] ![Version][bower-badge] [![Published][webcomponents-badge]][webcomponents-url] [![Simpla slack group][slack-badge]][slack-url]
 
-Simpla-admin is a lightweight, beautiful admin component for the [Simpla](https://www.simpla.io) content system. It provides everything you need to manage a Simpla app (login prompts, edit mode management, save controls, notifications, keyboard shortcuts) while remaining unobtrusive and minimal.
+Simpla-admin is a lightweight, beautiful admin component for the [Simpla][simpla] content system. It provides everything you need to manage a Simpla app (login prompts, edit mode management, save controls, notifications, keyboard shortcuts) while remaining unobtrusive and minimal.
+
+### Contents
+
+- [Installation and setup](#installation-and-setup)
+- [Hashtracking](#hashtracking)
+- [Login prompts](#login-prompts)
+- [Hotkeys](#hotkeys)
+- [Accidental click protection](#accidental-click-protection)
+- [Notifications](#notifications)
+- [Contributing](#contributing)
+
+### Resources
+
+- [API reference][api]
+- [Demo][demo]
+- [License][license]
 
 ## Installation and setup
 
@@ -11,7 +27,7 @@ Install simpla-admin with Bower (Yarn support coming soon)
 $ bower i simpla-admin --save
 ```
 
-[Setup Simpla](https://www.simpla.io/docs/guides/get-started) on your page, then import simpla-admin into your `<head>`. It will automatically attach and load itself as a singleton when Simpla enters edit mode.
+[Setup Simpla][simpla-setup] on your page, then import simpla-admin into your `<head>`. It will automatically attach and load itself as a singleton when Simpla enters edit mode.
 
 ```html
 <link rel="import" href="/bower_components/simpla-admin/simpla-admin.html" async>
@@ -82,34 +98,21 @@ var notification = new CustomEvent('simpla-notification', {
 
 window.dispatchEvent(notification);
 ```
-
-## API reference
- 
-Simpla-admin attaches itself to `window` as a global singleton, you can access it from `window.SimplaAdmin`.
-
-### Properties
-
-Property         | Type    | Default | Description                                                   
----------------- | ------- | ------- | -----------                                                   
-`hashTracking`   | Boolean | `true`  | Whether to bind edit mode to `#edit` in the URL
-`loginPrompt`    | Boolean | `true`  | Whether to visually prompt for login if the user is not authenticated
-`hotkeys`        | Boolean | `true`  | Whether to enable keyboard shortcuts for common actions
-`protectEditing` | Boolean | `true`  | Whether to enable accidental click protection while editing
-
-Set properties on `window.SimplaAdmin` directly 
-
-```js
-window.SimplaAdmin = window.SimplaAdmin || {};
-SimplaAdmin.hashTracking = false;
-```
   
 ## Contributing
 
-If you find any issues with simpla-admin please report them! If you'd like to see a new feature in supported file an issue or let us know in Simpla's public [Slack group](https://slack.simpla.io). We also happily accept PRs. 
+If you find any issues with simpla-admin please report them! If you'd like to see a new feature supported file an issue or let us know in Simpla's public [Slack group][slack-url]. We also happily accept PRs. 
 
 ***
 
-MIT © [Simpla](https://www.simpla.io)
+MIT © [Simpla][simpla]
+
+[api]: https://www.webcomponents.org/element/SimplaElements/simpla-admin/page/API.md
+[demo]: https://www.webcomponents.org/element/SimplaElements/simpla-admin/demo/demo/index.html
+[license]: https://github.com/SimplaElements/simpla-admin/blob/master/LICENSE
+
+[simpla]: https://www.simpla.io
+[simpla-setup]: https://www.simpla.io/docs/guides/get-started
 
 [bower-badge]: https://img.shields.io/bower/v/simpla-admin.svg
 [travis-badge]: https://img.shields.io/travis/SimplaElements/simpla-admin.svg
