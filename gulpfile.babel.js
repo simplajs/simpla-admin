@@ -43,7 +43,7 @@ const bs = browserSync.create(),
             resolve({ main: true, browser: true }),
             commonJs(),
             babel({
-              exclude: 'node_modules/**/*'
+              exclude: 'node_modules/!(p-wait-for)**/*'
             }),
             rollupif(!argv.debug, [
               uglify({}, uglifyHarmony )
