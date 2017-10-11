@@ -21,20 +21,26 @@ export default {
           let simplaLogin = this.$['login'],
               promptAvailable = () => typeof simplaLogin.prompt === 'function';
 
-          waitFor(promptAvailable, 1).then(() => {
-            if (editable && !this._authenticated) {
-              simplaLogin.prompt().then(loggedIn => {
-                Simpla.editable(loggedIn)
-              });
-            }
-          });
+          if (!editable || this._authenticated) {
+            return
+          };
+
+          if (parseInt(Simpla.version) === 3) {
+            Simpla.login();
+          } else {
+            waitFor(promptAvailable, 1).then(() => {
+              simplaLogin.prompt()
+                .then(loggedIn => Simpla.editable(loggedIn));
+            });
+          }
         };
 
-    if (loginPrompt) {
-      promptLogin(Simpla.getState('editable'));
-      observers.login = Simpla.observeState('editable', promptLogin);
-    } else {
+    if (!loginPrompt) {
       observers.login && observers.login.unobserve();
+      return;
     }
+
+    promptLogin(Simpla.getState('editable'));
+    observers.login = Simpla.observeState('editable', promptLogin);
   }
 }

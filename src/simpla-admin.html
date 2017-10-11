@@ -46,20 +46,20 @@
     import PointerEvents from './utils/pointerEvents';
 
     const LAZYLOAD_DEPENDENCIES = [
-            '../simpla-login/simpla-login.html',
-            '../simpla-notify/simpla-notify.html',
-            'simpla-admin-controls.html'
-          ],
-          NOTIFICATIONS = {
-            saved: 'changes saved',
-            saveFailed: 'something went wrong, try again?'
-          },
-          DEFAULT_CONFIG = {
-            hashTracking: true,
-            loginPrompt: true,
-            hotkeys: true,
-            protectEditing: true
-          };
+          '../simpla-login/simpla-login.html',
+          '../simpla-notify/simpla-notify.html',
+          'simpla-admin-controls.html'
+        ],
+        NOTIFICATIONS = {
+          saved: 'changes saved',
+          saveFailed: 'something went wrong, try again?'
+        },
+        DEFAULT_CONFIG = {
+          hashTracking: true,
+          loginPrompt: true,
+          hotkeys: true,
+          protectEditing: true
+        };
 
     // Globals
     window.SimplaAdmin = Object.assign({}, DEFAULT_CONFIG, window.SimplaAdmin);
@@ -179,7 +179,7 @@
        */
       detached() {
         Object.keys(this._simplaObservers).forEach(observer => {
-          this._simplaObservers[observer].unobserve()
+          this._simplaObservers[observer].unobserve();
         });
         this._simplaObservers = {};
 
@@ -209,7 +209,11 @@
        * @return {undefined}
        */
       login() {
-        this.$['login'].open();
+        if (parseInt(Simpla.version) === 3) {
+          Simpla.login();
+        } else {
+          this.$['login'].open();
+        }
       }
 
       /**
@@ -234,7 +238,7 @@
 
         Simpla.save()
           .then(success)
-          .catch(failed)
+          .catch(failed);
       }
 
       /**
@@ -301,7 +305,7 @@
           this.importHref(this.resolveUrl(dependency));
         });
       }
-    };
+    }
     Polymer(SimplaAdmin);
   </script>
 </dom-module>
