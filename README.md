@@ -1,5 +1,5 @@
 # Simpla Admin
-[![Build status][travis-badge]][travis-url] ![Size][size-badge] ![Version][bower-badge] [![Published][webcomponents-badge]][webcomponents-url] [![Simpla slack group][slack-badge]][slack-url]
+[![Build status][travis-badge]][travis-url] ![Size][size-badge] ![Version][bower-badge] [![Published][webcomponents-badge]][webcomponents-url]
 
 Simpla-admin is a lightweight, beautiful admin component for the [Simpla][simpla] content system. It provides everything you need to manage a Simpla app (login prompts, edit mode management, save controls, notifications, keyboard shortcuts) while remaining unobtrusive and minimal.
 
@@ -101,7 +101,7 @@ window.dispatchEvent(notification);
   
 ## Contributing
 
-If you find any issues with simpla-admin please report them! If you'd like to see a new feature supported file an issue or let us know in Simpla's public [Slack group][slack-url]. We also happily accept PRs. 
+If you find any issues with simpla-admin please report them! If you'd like to see a new feature supported file an issue. We also happily accept PRs. 
 
 ***
 
@@ -115,11 +115,9 @@ MIT © [Simpla][simpla]
 [simpla-setup]: https://www.simpla.io/docs/guides/get-started
 
 [bower-badge]: https://img.shields.io/bower/v/simpla-admin.svg
-[travis-badge]: https://img.shields.io/travis/SimplaElements/simpla-admin.svg
-[travis-url]: https://travis-ci.org/SimplaElements/simpla-admin
-[size-badge]: https://badges.herokuapp.com/size/github/SimplaElements/simpla-admin/master/simpla-admin.html?gzip=true
+[travis-badge]: https://img.shields.io/travis/simplaio/simpla-admin.svg
+[travis-url]: https://travis-ci.org/simplaios/simpla-admin
+[size-badge]: https://badges.herokuapp.com/size/github/simplaio/simpla-admin/master/simpla-admin.html?gzip=true
 [webcomponents-badge]: https://img.shields.io/badge/webcomponents.org-published-blue.svg
-[webcomponents-url]: https://www.webcomponents.org/element/SimplaElements/simpla-admin
-[slack-badge]: http://slack.simpla.io/badge.svg
-[slack-url]: https://slack.simpla.io
+[webcomponents-url]: https://www.webcomponents.org/element/simplaio/simpla-admin
 
