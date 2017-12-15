@@ -30,7 +30,6 @@
   "dependencies": {
     "polymer": "^1.6.0",
     "simpla-notify": "^1.0.0",
-    "simpla-login": "^1.0.0",
     "simple-dropdown": "simple-dropdown-menu#^0.2.0",
     "simpla-styles": "^1.0.0",
     "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^1.1.0",

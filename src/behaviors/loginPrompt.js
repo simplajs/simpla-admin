@@ -1,5 +1,3 @@
-import waitFor from 'p-wait-for';
-
 export default {
   properties: {
 
@@ -16,24 +14,12 @@ export default {
    * @return {undefined}
    */
   _toggleLoginPromptObserver(loginPrompt) {
-    let { _simplaObservers: observers } = this,
-        promptLogin = (editable) => {
-          let simplaLogin = this.$['login'],
-              promptAvailable = () => typeof simplaLogin.prompt === 'function';
-
-          if (!editable || this._authenticated) {
-            return
+    const { _simplaObservers: observers } = this,
+          promptLogin = (editable) => {
+            if (editable && !this._authenticated) {
+              Simpla.login();
+            };
           };
-
-          if (parseInt(Simpla.version) === 3) {
-            Simpla.login();
-          } else {
-            waitFor(promptAvailable, 1).then(() => {
-              simplaLogin.prompt()
-                .then(loggedIn => Simpla.editable(loggedIn));
-            });
-          }
-        };
 
     if (!loginPrompt) {
       observers.login && observers.login.unobserve();

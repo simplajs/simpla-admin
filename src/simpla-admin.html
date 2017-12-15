@@ -25,11 +25,6 @@
       hidden$="[[_loginOpen]]">
     </simpla-admin-controls>
 
-    <simpla-login
-      id="login"
-      active="{{_loginOpen}}">
-    </simpla-login>
-
     <simpla-notify></simpla-notify>
 
   </template>
@@ -46,7 +41,6 @@
     import PointerEvents from './utils/pointerEvents';
 
     const LAZYLOAD_DEPENDENCIES = [
-          '../simpla-login/simpla-login.html',
           '../simpla-notify/simpla-notify.html',
           'simpla-admin-controls.html'
         ],
